@@ -24,6 +24,15 @@ public class MainController {
         private Label titleLabel;
 
         @FXML
+        private StackPane validationPane;
+
+        @FXML
+        private StackPane validPane;
+
+        @FXML
+        private TextField validationNumberField;
+
+        @FXML
         private Button howToUseButton;
 
         @FXML
@@ -36,7 +45,24 @@ public class MainController {
         private Button submitButton;
 
         @FXML
+        private Button pinSubmit;
+
+        @FXML
+        private StackPane userIdentityPane;
+
+        @FXML
+        private Button newUserButton;
+
+        @FXML
+        private Button oldUserButton;
+
+        private static int newOrOld;
+
+        @FXML
         public void initialize(){
+                validPane.setVisible(false);
+                userIdentityPane.setVisible(false);
+                validationPane.setVisible(true);
                 rootPane.widthProperty().addListener((observable, oldValue, newValue) -> {
                         int newFontSize = Math.max(12, (int) newValue.doubleValue() / 12); // Adjust scaling factor as needed
                         titleLabel.setStyle("-fx-font-size: " + newFontSize + "px; -fx-font-family: Phosphate");
@@ -68,11 +94,40 @@ public class MainController {
         @FXML
         void validateUser(ActionEvent event){
                 if(event.getSource() == submitButton) {
-                        System.out.println("hello");
                         String username = usernameField.getText();
                         String password = passwordField.getText();
-                        logInValidator.validate(username, password);
+                        if(logInValidator.validateUser(newOrOld, username, password)){
+                                // go onto the next page
+                        }
+                        else{
+                              usernameField.clear();
+                              passwordField.clear();
+                        }
+                }
+                else if(event.getSource() == pinSubmit){
+                        String pin = validationNumberField.getText();
+                        if(logInValidator.validatePIN(pin)){
+                                userIdentityPane.setVisible(true);
+                                validationPane.setVisible(false);
+                        }
+                        validationNumberField.clear();
                 }
         }
+
+        @FXML
+        void typeOfUser(ActionEvent event){
+                if(event.getSource() == newUserButton) {
+                        newOrOld = 0;
+                }
+                else if(event.getSource() == oldUserButton){
+                        newOrOld = 1;
+
+                }
+                userIdentityPane.setVisible(false);
+                validPane.setVisible(true);
+        }
+
+
+
 
 }
