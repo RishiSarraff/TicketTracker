@@ -60,7 +60,7 @@ public class  DatabaseDriver {
                                   ")";
 
             Statement statement = connection.createStatement();
-            statement.execute(userTableDb);
+            statement.executeUpdate(userTableDb);
         }
         catch(SQLException e){
             rollback();

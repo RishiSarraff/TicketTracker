@@ -4,6 +4,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
@@ -18,7 +19,6 @@ public class logInValidator {
             if(!db.isConnected) {
                 db.connect();
             }
-
             db.createUserTable();
 
             if(!validatePassword(password)){
@@ -54,7 +54,7 @@ public class logInValidator {
 
     public static boolean validatePIN(String pin){
         pin = pin.trim();
-        if(pin.length() == 0){
+        if(pin.isEmpty()){
             dialogPopUp("You did not enter a PIN, please enter one", "No input provided");
             return false;
         }
@@ -65,8 +65,6 @@ public class logInValidator {
                 return false;
             }
         }
-
-
 
         int userInput = Integer.parseInt(pin);
         if(userInput == realPin){
@@ -90,7 +88,7 @@ public class logInValidator {
             if(Character.isDigit(currChar)){
                 countOfDigits++;
             }
-            if(!Character.isDigit(currChar) || !Character.isLetter(currChar)){
+            if(!Character.isDigit(currChar) && !Character.isLetter(currChar)){
                 dialogPopUp("Password can only be letters and digits", "Try again");
                 return false;
             }
@@ -116,6 +114,7 @@ public class logInValidator {
         Dialog<String> dLog = new Dialog<>();
         dLog.setDialogPane(dp);
         dLog.setTitle(typeOfAlert);
+
         dLog.showAndWait();
     }
 
