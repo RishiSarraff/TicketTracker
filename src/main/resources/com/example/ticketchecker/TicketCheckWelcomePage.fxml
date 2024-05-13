@@ -140,7 +140,7 @@
                         <Font name="Phosphate Inline" size="36.0" />
                      </font>
                      <StackPane.margin>
-                        <Insets top="40.0" />
+                        <Insets top="90.0" />
                      </StackPane.margin>
                   </Label>
                </children>
