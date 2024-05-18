@@ -1,9 +1,6 @@
-package com.example.ticketchecker;
+package com.example.ticketchecker.model;
 
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
+import com.example.ticketchecker.database.DatabaseDriver;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;

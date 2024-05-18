@@ -1,4 +1,4 @@
-package com.example.ticketchecker;
+package com.example.ticketchecker.model;
 
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;

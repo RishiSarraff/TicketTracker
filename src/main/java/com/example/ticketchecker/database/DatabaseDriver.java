@@ -1,4 +1,4 @@
-package com.example.ticketchecker;
+package com.example.ticketchecker.database;
 
 import java.sql.*;
 
@@ -10,7 +10,7 @@ public class  DatabaseDriver {
 
     private Connection connection;
 
-    boolean isConnected = false;
+    public boolean isConnected = false;
 
     public DatabaseDriver(String dbName){
         this.sqliteDB = dbName;

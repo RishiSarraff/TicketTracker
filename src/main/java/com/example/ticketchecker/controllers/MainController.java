@@ -1,14 +1,19 @@
-package com.example.ticketchecker;
+package com.example.ticketchecker.controllers;
 
+import com.example.ticketchecker.model.SceneSwitch;
+import com.example.ticketchecker.model.logInValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 
 public class MainController {
@@ -31,6 +36,9 @@ public class MainController {
 
         @FXML
         private TextField validationNumberField;
+
+        @FXML
+        private AnchorPane mainPane;
 
         @FXML
         private Button howToUseButton;
@@ -84,23 +92,22 @@ public class MainController {
 
         @FXML
         void closeProgram(ActionEvent event) {
-                Scene scene = closeButton.getScene();
+                if(event.getSource() == closeButton) {
+                        Scene scene = closeButton.getScene();
                         Stage stage = (Stage) scene.getWindow();
-                        // Close the stage
                         stage.close();
-
-        }
-
-        @FXML
-        void goToAppManual(ActionEvent event) {
-                if(event.getSource() == howToUseButton){
-                        // scene transition into appmanual
                 }
-
         }
 
         @FXML
-        void validateUser(ActionEvent event){
+        void goToAppManual(ActionEvent event) throws IOException {
+                if(event.getSource() == howToUseButton){
+                       new SceneSwitch(currStage, "App Manual", "AppManual.fxml");
+                }
+        }
+
+        @FXML
+        void validateUser(ActionEvent event) throws IOException {
                 if(event.getSource() == submitButton) {
                         String username = usernameField.getText();
                         String password = passwordField.getText();
@@ -110,8 +117,7 @@ public class MainController {
                                         validPane.setVisible(false);
                                 }
                                 else if(newOrOld == 1){
-                                        // go onto the next page
-
+                                      new SceneSwitch(currStage, "Menu Screen", "MenuScreen.fxml");
                                 }
                         }
                         else{
