@@ -2,6 +2,14 @@ module com.example.ticketchecker {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires com.google.api.client.extensions.java6.auth;
+    requires com.google.api.client.auth;
+    requires com.google.api.client.extensions.jetty.auth;
+    requires google.api.client;
+    requires com.google.api.client;
+    requires com.google.api.client.json.gson;
+    requires com.google.api.services.sheets;
+    requires org.apache.commons.text;
 
 
     opens com.example.ticketchecker to javafx.fxml;
