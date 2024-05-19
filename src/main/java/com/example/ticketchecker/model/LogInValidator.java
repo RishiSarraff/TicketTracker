@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
-public class logInValidator {
+public class LogInValidator {
 
     static DatabaseDriver db = DatabaseDriver.getInstance("TickCheckDB");
 

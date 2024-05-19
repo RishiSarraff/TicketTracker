@@ -1,7 +1,7 @@
 package com.example.ticketchecker.controllers;
 
 import com.example.ticketchecker.model.SceneSwitch;
-import com.example.ticketchecker.model.logInValidator;
+import com.example.ticketchecker.model.LogInValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -111,7 +111,7 @@ public class MainController {
                 if(event.getSource() == submitButton) {
                         String username = usernameField.getText();
                         String password = passwordField.getText();
-                        if(logInValidator.validateUser(newOrOld, username, password, currStage)){
+                        if(LogInValidator.validateUser(newOrOld, username, password, currStage)){
                                 if(newOrOld == 0){
                                         userIdentityPane.setVisible(true);
                                         validPane.setVisible(false);
@@ -127,7 +127,7 @@ public class MainController {
                 }
                 else if(event.getSource() == pinSubmit){
                         String pin = validationNumberField.getText();
-                        if(logInValidator.validatePIN(pin, currStage)){
+                        if(LogInValidator.validatePIN(pin, currStage)){
                                 userIdentityPane.setVisible(true);
                                 validationPane.setVisible(false);
                         }
