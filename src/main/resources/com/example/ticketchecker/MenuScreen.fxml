@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<Pane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #D0E8FF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ticketchecker.controllers.MenuScreenController">
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #c7e8fb;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ticketchecker.controllers.MenuScreenController">
    <children>
-      <StackPane fx:id="navigationPane" layoutX="-13.0" layoutY="-12.0" prefHeight="135.0" prefWidth="1293.0" style="-fx-background-color: #6082B6;">
+      <AnchorPane prefHeight="119.0" prefWidth="1280.0" style="-fx-background-color: #6082B6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox fx:id="navigationHBox" prefHeight="100.0" prefWidth="1265.0" style="-fx-background-color: #6082B6;" />
+            <Button fx:id="closeButton" cancelButton="true" defaultButton="true" layoutX="858.0" layoutY="61.0" mnemonicParsing="false" onAction="#closeProgram" style="-fx-background-color: white; -fx-background-radius: 30;" text="X" textFill="#6082b6" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+               <font>
+                  <Font name="Phosphate Inline" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="logOutButton" layoutX="56.0" layoutY="41.0" mnemonicParsing="false" onAction="#moveToLogIn" style="-fx-background-color: white; -fx-background-radius: 30;" text="Log Out" textFill="#6082b6" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+               <font>
+                  <Font name="Phosphate Inline" size="18.0" />
+               </font>
+            </Button>
          </children>
-      </StackPane>
+      </AnchorPane>
    </children>
-</Pane>
+</AnchorPane>

@@ -1,5 +1,7 @@
 package com.example.ticketchecker.controllers;
 
+import com.example.ticketchecker.model.CloseProgram;
+import com.example.ticketchecker.model.SceneController;
 import com.example.ticketchecker.model.SceneSwitch;
 import com.example.ticketchecker.model.LogInValidator;
 import javafx.event.ActionEvent;
@@ -16,7 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class MainController {
+public class MainController implements SceneController {
 
 
         @FXML
@@ -37,8 +39,6 @@ public class MainController {
         @FXML
         private TextField validationNumberField;
 
-        @FXML
-        private AnchorPane mainPane;
 
         @FXML
         private Button howToUseButton;
@@ -68,6 +68,8 @@ public class MainController {
 
         private Stage currStage;
 
+        private MainController mc;
+
         public void setCurrentStage(Stage stage){
                 currStage = stage;
         }
@@ -88,21 +90,19 @@ public class MainController {
                 });
 
 
+                mc = new MainController();
+
         }
 
         @FXML
-        void closeProgram(ActionEvent event) {
-                if(event.getSource() == closeButton) {
-                        Scene scene = closeButton.getScene();
-                        Stage stage = (Stage) scene.getWindow();
-                        stage.close();
-                }
+        void closeProgram() {
+                CloseProgram.closeProgram(closeButton);
         }
 
         @FXML
         void goToAppManual(ActionEvent event) throws IOException {
                 if(event.getSource() == howToUseButton){
-                       new SceneSwitch(currStage, "App Manual", "AppManual.fxml");
+                       new SceneSwitch(currStage, "App Manual", "AppManual.fxml", mc);
                 }
         }
 
@@ -117,7 +117,7 @@ public class MainController {
                                         validPane.setVisible(false);
                                 }
                                 else if(newOrOld == 1){
-                                      new SceneSwitch(currStage, "Menu Screen", "MenuScreen.fxml");
+                                      new SceneSwitch(currStage, "Menu Screen", "MenuScreen.fxml", mc);
                                 }
                         }
                         else{

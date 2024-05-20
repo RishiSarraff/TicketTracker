@@ -12,12 +12,19 @@ import java.util.Objects;
 
 public class SceneSwitch {
 
-    public SceneSwitch(Stage currStage, String title, String fxml) throws IOException {
+    public SceneSwitch(Stage currStage, String title, String fxml, SceneController sceneController) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(fxml));
         Pane rootPane = fxmlLoader.load();
         Scene newScene = new Scene(rootPane, 1280, 720);
+
+        sceneController = fxmlLoader.getController();
+        sceneController.setCurrentStage(currStage);
+
         currStage.setTitle(title);
         currStage.setScene(newScene);
+
+
+
         currStage.show();
 
     }
