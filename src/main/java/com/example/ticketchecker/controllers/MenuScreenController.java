@@ -26,7 +26,11 @@ public class MenuScreenController implements SceneController {
     @FXML
     private Button logOutButton;
 
+    @FXML
+            private Button tbdButton;
+
     MenuScreenController msc;
+
 
     public void setCurrentStage(Stage stage){
         currStage = stage;
@@ -54,16 +58,26 @@ public class MenuScreenController implements SceneController {
     }
 
     @FXML
-    void moveToUploadPage(ActionEvent event){
+    void moveToUploadPage(ActionEvent event) throws IOException {
         if(event.getSource() == uploadFilesButton){
-            // we go to the upload files page
+           new SceneSwitch(currStage, "Welcome to the Ticket Validator!", "UploadSheetData.fxml", msc);
         }
     }
 
     @FXML
-    void moveToVerificationPage(ActionEvent event){
+    void moveToVerificationPage(ActionEvent event) throws IOException {
         if(event.getSource() == verificationPageButton){
-            // we move to the sending emails page.
+            new SceneSwitch(currStage, "Welcome to the Email Sender!", "EmailSender.fxml", msc);
+            //TO:DO Implement the email sender pade
         }
     }
+
+    @FXML
+    void moveToTBDPage(ActionEvent event){
+        if(event.getSource() == tbdButton){
+            // we will moe to the tbd button
+        }
+    }
+
+
 }
