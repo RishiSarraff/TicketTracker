@@ -18,6 +18,12 @@ public class MenuScreenController implements SceneController {
     private Button closeButton;
 
     @FXML
+    private Button verificationPageButton;
+
+    @FXML
+    private Button uploadFilesButton;
+
+    @FXML
     private Button logOutButton;
 
     MenuScreenController msc;
@@ -25,8 +31,6 @@ public class MenuScreenController implements SceneController {
     public void setCurrentStage(Stage stage){
         currStage = stage;
     }
-
-
 
 
     @FXML
@@ -47,5 +51,19 @@ public class MenuScreenController implements SceneController {
             new SceneSwitch(currStage, "Welcome!", "TicketCheckWelcomePage.fxml", msc);
         }
 
+    }
+
+    @FXML
+    void moveToUploadPage(ActionEvent event){
+        if(event.getSource() == uploadFilesButton){
+            // we go to the upload files page
+        }
+    }
+
+    @FXML
+    void moveToVerificationPage(ActionEvent event){
+        if(event.getSource() == verificationPageButton){
+            // we move to the sending emails page.
+        }
     }
 }
