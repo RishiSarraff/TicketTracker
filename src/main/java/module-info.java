@@ -10,6 +10,7 @@ module com.example.ticketchecker {
     requires com.google.api.client.json.gson;
     requires com.google.api.services.sheets;
     requires org.apache.commons.text;
+    requires org.json;
 
 
     opens com.example.ticketchecker to javafx.fxml;
@@ -22,4 +23,10 @@ module com.example.ticketchecker {
     opens com.example.ticketchecker.model to javafx.fxml;
     exports com.example.ticketchecker.model.sheets;
     opens com.example.ticketchecker.model.sheets to javafx.fxml;
+    exports com.example.ticketchecker.model.smallFeatures;
+    opens com.example.ticketchecker.model.smallFeatures to javafx.fxml;
+    exports com.example.ticketchecker.model.validators;
+    opens com.example.ticketchecker.model.validators to javafx.fxml;
+    exports com.example.ticketchecker.model.jsonParsers;
+    opens com.example.ticketchecker.model.jsonParsers to javafx.fxml;
 }

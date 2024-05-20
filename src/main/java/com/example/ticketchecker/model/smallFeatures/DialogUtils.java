@@ -1,4 +1,4 @@
-package com.example.ticketchecker.model;
+package com.example.ticketchecker.model.smallFeatures;
 
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 public class DialogUtils {
 
-    static void dialogPopUp(String alert, String typeOfAlert, Stage currStage){
+    public static void dialogPopUp(String alert, String typeOfAlert, Stage currStage){
         DialogPane dp = new DialogPane();
         dp.setHeaderText(null);
         dp.setContentText(alert);

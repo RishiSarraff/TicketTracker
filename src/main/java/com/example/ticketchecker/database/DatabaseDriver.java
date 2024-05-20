@@ -1,6 +1,9 @@
 package com.example.ticketchecker.database;
 
+import com.example.ticketchecker.model.Member;
+
 import java.sql.*;
+import java.util.List;
 
 public class  DatabaseDriver {
 
@@ -101,8 +104,22 @@ public class  DatabaseDriver {
     }
 
 
+    public void createBoardTable() {
+        try{
+            String createBoardString = "CREATE TABLE IF NOT EXISTS Board(" +
+                    "ID INTEGER PRIMARY KEY NOT NULL," +
+                    "PermissionLevel TEXT NOT NULL, " +
+                    "ChairPosition TEXT NOT NULL," +
+                    "Name TEXT NOT NULL" +
+                    ")";
+            
+            Statement statement = connection.createStatement();
+            statement.executeQuery(createBoardString);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-
-
-
+    public void insertIntoBoardTable(List<Member> boardList) {
+    }
 }

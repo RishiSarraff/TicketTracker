@@ -1,6 +1,7 @@
-package com.example.ticketchecker.model;
+package com.example.ticketchecker.model.validators;
 
 import com.example.ticketchecker.database.DatabaseDriver;
+import com.example.ticketchecker.model.smallFeatures.DialogUtils;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;

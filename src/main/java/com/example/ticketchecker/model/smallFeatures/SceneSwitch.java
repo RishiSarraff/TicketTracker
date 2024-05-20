@@ -1,4 +1,4 @@
-package com.example.ticketchecker.model;
+package com.example.ticketchecker.model.smallFeatures;
 
 import com.example.ticketchecker.MainApplication;
 import com.example.ticketchecker.controllers.SceneController;

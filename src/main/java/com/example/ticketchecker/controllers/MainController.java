@@ -1,8 +1,8 @@
 package com.example.ticketchecker.controllers;
 
-import com.example.ticketchecker.model.CloseProgram;
-import com.example.ticketchecker.model.SceneSwitch;
-import com.example.ticketchecker.model.LogInValidator;
+import com.example.ticketchecker.model.smallFeatures.CloseProgram;
+import com.example.ticketchecker.model.smallFeatures.SceneSwitch;
+import com.example.ticketchecker.model.validators.LogInValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
