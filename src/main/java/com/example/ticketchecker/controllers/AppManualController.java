@@ -1,6 +1,5 @@
 package com.example.ticketchecker.controllers;
 
-import com.example.ticketchecker.model.SceneController;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 

@@ -1,14 +1,13 @@
 package com.example.ticketchecker.model;
 
 import com.example.ticketchecker.MainApplication;
+import com.example.ticketchecker.controllers.SceneController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class SceneSwitch {
 

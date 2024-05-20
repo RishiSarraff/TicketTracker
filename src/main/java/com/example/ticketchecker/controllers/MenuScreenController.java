@@ -1,15 +1,10 @@
 package com.example.ticketchecker.controllers;
 
 import com.example.ticketchecker.model.CloseProgram;
-import com.example.ticketchecker.model.SceneController;
 import com.example.ticketchecker.model.SceneSwitch;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;

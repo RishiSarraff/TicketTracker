@@ -1,4 +1,4 @@
-package com.example.ticketchecker.model;
+package com.example.ticketchecker.controllers;
 
 import javafx.stage.Stage;
 
