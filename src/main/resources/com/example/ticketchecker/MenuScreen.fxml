@@ -53,7 +53,7 @@
                   <DropShadow height="50.0" radius="22.0" width="40.0" />
                </effect>
             </Button>
-            <Button fx:id="tbdButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#moveToTBDPage" prefHeight="458.0" prefWidth="358.0" style="-fx-background-color: #6082B6; -fx-background-radius: 45;" text="TBD" textFill="#c7e8fb" HBox.hgrow="ALWAYS">
+            <Button fx:id="tbdButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#moveToTBDPage" prefHeight="458.0" prefWidth="358.0" style="-fx-background-color: #6082B6; -fx-background-radius: 45;" text="Change PassCode" textAlignment="CENTER" textFill="#c7e8fb" wrapText="true" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="Phosphate Inline" size="48.0" />
                </font>

@@ -62,13 +62,16 @@
             </StackPane>
             <StackPane fx:id="validationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="450.0" style="-fx-background-color: #c7e8fb; -fx-background-radius: 45;">
                <children>
-                  <TextField fx:id="validationNumberField" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="300.0" style="-fx-background-radius: 30;" />
+                  <TextField fx:id="validationNumberField" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="300.0" style="-fx-background-radius: 30;">
+                     <StackPane.margin>
+                        <Insets bottom="200.0" />
+                     </StackPane.margin></TextField>
                   <Label text="Enter PIN:" textFill="#6082b6">
                      <font>
                         <Font name="Phosphate Inline" size="24.0" />
                      </font>
                      <StackPane.margin>
-                        <Insets bottom="75.0" />
+                        <Insets bottom="275.0" />
                      </StackPane.margin>
                   </Label>
                   <Button fx:id="pinSubmit" mnemonicParsing="false" onAction="#validateUser" style="-fx-background-color: white;" text="Submit" textFill="#6082b6">
@@ -76,9 +79,35 @@
                         <Font name="Phosphate Inline" size="14.0" />
                      </font>
                      <StackPane.margin>
-                        <Insets top="125.0" />
+                        <Insets top="300.0" />
                      </StackPane.margin>
                   </Button>
+                  <Label text="First Name:" textFill="#6082b6">
+                     <font>
+                        <Font name="Phosphate Inline" size="24.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets bottom="75.0" />
+                     </StackPane.margin>
+                  </Label>
+                  <TextField fx:id="userFirstNameField" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="300.0" style="-fx-background-radius: 30;">
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </TextField>
+                  <Label text="Last Name:" textFill="#6082b6">
+                     <font>
+                        <Font name="Phosphate Inline" size="24.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets top="100.0" />
+                     </StackPane.margin>
+                  </Label>
+                  <TextField fx:id="userLastNameField" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="300.0" style="-fx-background-radius: 30;">
+                     <StackPane.margin>
+                        <Insets top="175.0" />
+                     </StackPane.margin>
+                  </TextField>
                </children>
             </StackPane>
             <StackPane fx:id="userIdentityPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="450.0" style="-fx-background-color: #c7e8fb; -fx-background-radius: 45;">

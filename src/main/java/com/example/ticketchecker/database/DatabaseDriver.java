@@ -145,4 +145,40 @@ public class  DatabaseDriver {
             throw e;
         }
     }
+
+    public String getPermissionLevel(String firstName, String lastName) throws SQLException {
+        try{
+            String pLevel = String.format("""
+                                          SELECT PermissionLevel FROM Board WHERE FirstName = '%s' AND LastName = '%s'
+                                          """, firstName, lastName);
+
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(pLevel);
+
+            String answer = rs.getString("PermissionLevel");
+            return answer;
+
+        }
+        catch(SQLException e){
+            throw e;
+        }
+    }
+
+    public String getChairPosition(String firstName, String lastName) throws SQLException {
+        try{
+            String pLevel = String.format("""
+                                          SELECT ChairPosition FROM Board WHERE FirstName = '%s' AND LastName = '%s'
+                                          """, firstName, lastName);
+
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(pLevel);
+
+            String answer = rs.getString("ChairPosition");
+            return answer;
+
+        }
+        catch(SQLException e){
+            throw e;
+        }
+    }
 }

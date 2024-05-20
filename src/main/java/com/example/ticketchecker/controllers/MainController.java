@@ -1,5 +1,6 @@
 package com.example.ticketchecker.controllers;
 
+import com.example.ticketchecker.model.User;
 import com.example.ticketchecker.model.smallFeatures.CloseProgram;
 import com.example.ticketchecker.model.smallFeatures.SceneSwitch;
 import com.example.ticketchecker.model.validators.LogInValidator;
@@ -60,6 +61,12 @@ public class MainController implements SceneController {
 
         @FXML
         private Button oldUserButton;
+
+        @FXML
+        private TextField userFirstNameField;
+
+        @FXML
+        private TextField userLastNameField;
 
         private static int newOrOld;
 
@@ -124,9 +131,22 @@ public class MainController implements SceneController {
                 }
                 else if(event.getSource() == pinSubmit){
                         String pin = validationNumberField.getText();
-                        if(LogInValidator.validatePIN(pin, currStage)){
+                        String userFirstName = userFirstNameField.getText();
+                        String userLastName = userLastNameField.getText();
+                        User currUser = new User(userFirstName, userLastName);
+                        currUser.setCurrStage(currStage);
+                        String userAccessLevel = currUser.getUserAccess();
+                        if(LogInValidator.validatePIN(pin, currStage) && userAccessLevel !=null){
                                 userIdentityPane.setVisible(true);
                                 validationPane.setVisible(false);
+                        }
+                        else{
+                                if(!LogInValidator.validatePIN(pin, currStage)){
+
+                                }
+                                else if(userAccessLevel == null){
+
+                                }
                         }
                         validationNumberField.clear();
                 }
