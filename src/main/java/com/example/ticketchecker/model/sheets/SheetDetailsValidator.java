@@ -1,4 +1,4 @@
-package com.example.ticketchecker.model;
+package com.example.ticketchecker.model.sheets;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
 import java.util.regex.Matcher;
