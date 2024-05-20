@@ -166,24 +166,6 @@ public class  DatabaseDriver {
         }
     }
 
-    public String getChairPosition(String firstName, String lastName) throws SQLException {
-        try{
-            String pLevel = String.format("""
-                                          SELECT ChairPosition FROM Board WHERE FirstName = '%s' AND LastName = '%s'
-                                          """, firstName, lastName);
-
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(pLevel);
-
-            String answer = rs.getString("ChairPosition");
-            return answer;
-
-        }
-        catch(SQLException e){
-            throw e;
-        }
-    }
-
     public void clearTable(String tableName) throws SQLException {
         try {
             Statement statement = connection.createStatement();
