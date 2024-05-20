@@ -110,16 +110,39 @@ public class  DatabaseDriver {
                     "ID INTEGER PRIMARY KEY NOT NULL," +
                     "PermissionLevel TEXT NOT NULL, " +
                     "ChairPosition TEXT NOT NULL," +
-                    "Name TEXT NOT NULL" +
+                    "FirstName TEXT NOT NULL," +
+                    "LastName TEXT NOT NULL" +
                     ")";
             
             Statement statement = connection.createStatement();
-            statement.executeQuery(createBoardString);
+            statement.execute(createBoardString);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void insertIntoBoardTable(List<Member> boardList) {
+    public void insertIntoBoardTable(List<Member> boardList) throws SQLException {
+
+        try{
+            for(int i = 0; i<boardList.size(); i++){
+                Member currMember = boardList.get(i);
+                String memberPermissionLevel = currMember.getPermissionLevel();
+                String memberPosition = currMember.getBoardPosition();
+                String firstName = currMember.getFirstName();
+                String lastName = currMember.getLastName();
+                String boardInfo = String.format("""
+                                                INSERT INTO Board(PermissionLevel, ChairPosition, FirstName, LastName)
+                                                values ('%s', '%s', '%s', '%s');
+                                                """, memberPermissionLevel, memberPosition, firstName, lastName);
+
+                Statement statement = connection.createStatement();
+                statement.executeUpdate(boardInfo);
+            }
+
+        }
+        catch(SQLException e){
+            rollback();
+            throw e;
+        }
     }
 }
