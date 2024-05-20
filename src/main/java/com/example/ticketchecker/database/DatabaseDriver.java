@@ -57,7 +57,7 @@ public class  DatabaseDriver {
         try{
 
             String userTableDb = "CREATE TABLE IF NOT EXISTS Users(" +
-                                  "ID INTEGER PRIMARY KEY NOT NULL," +
+                                  "UserID INTEGER PRIMARY KEY AUTOINCREMENT," +
                                   "Username TEXT NOT NULL," +
                                   "Password TEXT NOT NULL" +
                                   ")";
@@ -107,11 +107,13 @@ public class  DatabaseDriver {
     public void createBoardTable() {
         try{
             String createBoardString = "CREATE TABLE IF NOT EXISTS Board(" +
-                    "ID INTEGER PRIMARY KEY NOT NULL," +
+                    "MemberID INTEGER PRIMARY KEY NOT NULL," +
+                    "UserID INTEGER, " +
                     "PermissionLevel TEXT NOT NULL, " +
                     "ChairPosition TEXT NOT NULL," +
                     "FirstName TEXT NOT NULL," +
-                    "LastName TEXT NOT NULL" +
+                    "LastName TEXT NOT NULL," +
+                    "FOREIGN KEY (UserID) REFERENCES Users(UserID)" +
                     ")";
             
             Statement statement = connection.createStatement();
@@ -181,4 +183,36 @@ public class  DatabaseDriver {
             throw e;
         }
     }
+
+    public void clearTable(String tableName) throws SQLException {
+        try {
+            Statement statement = connection.createStatement();
+
+            String deletionQuery = "DROP TABLE " + tableName;
+            statement.executeUpdate(deletionQuery);
+
+        } catch (SQLException e) {
+            rollback();
+            throw e;
+        }
+    }
+
+    public void setBoardID(String username, String password, String firstName, String lastName) {
+        try{
+            // we get the user id from users table and change board user id to the user id value.
+            String setter = String.format("""
+                                          UPDATE Board SET UserID =
+                                          (SELECT UserID FROM Users WHERE Username = '%s' AND Password = '%s')
+                                          WHERE FirstName = '%s' AND LastName = '%s'
+                                          """, username, password, firstName, lastName);
+
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(setter);
+
+        }
+        catch(SQLException e){
+
+        }
+    }
+
 }

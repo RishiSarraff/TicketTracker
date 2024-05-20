@@ -74,6 +74,11 @@ public class MainController implements SceneController {
 
         private MainController mc;
 
+        public User currUser;
+
+        public String fName;
+        public String lName;
+
         public void setCurrentStage(Stage stage){
                 currStage = stage;
         }
@@ -115,7 +120,7 @@ public class MainController implements SceneController {
                 if(event.getSource() == submitButton) {
                         String username = usernameField.getText();
                         String password = passwordField.getText();
-                        if(LogInValidator.validateUser(newOrOld, username, password, currStage)){
+                        if(LogInValidator.validateUser(newOrOld, username, password, currStage, currUser.getFirstName(), currUser.getLastName())){
                                 if(newOrOld == 0){
                                         userIdentityPane.setVisible(true);
                                         validPane.setVisible(false);
@@ -133,20 +138,16 @@ public class MainController implements SceneController {
                         String pin = validationNumberField.getText();
                         String userFirstName = userFirstNameField.getText();
                         String userLastName = userLastNameField.getText();
-                        User currUser = new User(userFirstName, userLastName);
+                        currUser = new User(userFirstName, userLastName);
                         currUser.setCurrStage(currStage);
                         String userAccessLevel = currUser.getUserAccess();
                         if(LogInValidator.validatePIN(pin, currStage) && userAccessLevel !=null){
                                 userIdentityPane.setVisible(true);
                                 validationPane.setVisible(false);
                         }
-                        else{
-                                if(!LogInValidator.validatePIN(pin, currStage)){
-
-                                }
-                                else if(userAccessLevel == null){
-
-                                }
+                        if(userAccessLevel == null){
+                                userFirstNameField.clear();
+                                userLastNameField.clear();
                         }
                         validationNumberField.clear();
                 }

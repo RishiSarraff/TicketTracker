@@ -17,8 +17,8 @@ public class User {
     static DatabaseDriver db = DatabaseDriver.getInstance("TickCheckDB");
 
     public User(String firstName, String lastName){
-        this.firstName = firstName;
-        this.lastName = lastName;
+        setFirstName(firstName);
+        setLastName(lastName);
     }
 
     public String getFirstName() {

@@ -10,9 +10,9 @@ public class LogInValidator {
 
     static DatabaseDriver db = DatabaseDriver.getInstance("TickCheckDB");
 
-    static final int realPin = 115647;
+    static int realPin = 115647;
 
-    public static boolean validateUser(int newOrOldUser, String username, String password, Stage currStage){
+    public static boolean validateUser(int newOrOldUser, String username, String password, Stage currStage, String fName, String lName){
         try{
             if(!db.isConnected) {
                 db.connect();
@@ -26,6 +26,7 @@ public class LogInValidator {
             if(!db.findUser(username, password)){
                 if(newOrOldUser == 0) {
                     db.insertUser(username, password);
+                    db.setBoardID(username, password, fName, lName);
                     db.commit();
                     DialogUtils.dialogPopUp("Created account successfully", "Please proceed", currStage);
                     return true;
@@ -70,7 +71,7 @@ public class LogInValidator {
 
         int userInput = Integer.parseInt(pin);
         if(userInput == realPin){
-            DialogUtils.dialogPopUp("Correct Pin was entered, you may proceed", "Success", currStage);
+            DialogUtils.dialogPopUp("Correct Pin was entered", "Success", currStage);
             return true;
         }
 

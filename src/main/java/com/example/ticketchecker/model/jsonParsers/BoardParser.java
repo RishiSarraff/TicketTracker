@@ -16,7 +16,7 @@ public class BoardParser {
     static DatabaseDriver db = DatabaseDriver.getInstance("TickCheckDB");
 
     // note: do not run this multiple times, only run when updating board positions and/or names.
-
+    // note: use
 
     public static void main(String[] args) throws SQLException {
         JSONFileReader boardReader = new JSONFileReader("currentBoard.json");
@@ -27,6 +27,8 @@ public class BoardParser {
             if(!db.isConnected){
                 db.connect();
             }
+            db.createUserTable();
+
 
             db.createBoardTable();
             db.insertIntoBoardTable(boardList);
