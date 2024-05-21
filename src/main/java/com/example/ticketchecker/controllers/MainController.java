@@ -57,6 +57,9 @@ public class MainController implements SceneController {
         private StackPane userIdentityPane;
 
         @FXML
+        private Button backButton2;
+
+        @FXML
         private Button newUserButton;
 
         @FXML
@@ -148,10 +151,8 @@ public class MainController implements SceneController {
                                 userIdentityPane.setVisible(true);
                                 validationPane.setVisible(false);
                         }
-                        if(userAccessLevel == null){
-                                userFirstNameField.clear();
-                                userLastNameField.clear();
-                        }
+                        userFirstNameField.clear();
+                        userLastNameField.clear();
                         validationNumberField.clear();
                 }
         }
@@ -174,6 +175,14 @@ public class MainController implements SceneController {
                 if(event.getSource() == backButton){
                         userIdentityPane.setVisible(true);
                         validPane.setVisible(false);
+                }
+        }
+
+        @FXML
+        void goBackToLogInPane(ActionEvent event){
+                if(event.getSource() == backButton2){
+                        userIdentityPane.setVisible(false);
+                        validationPane.setVisible(true);
                 }
         }
 

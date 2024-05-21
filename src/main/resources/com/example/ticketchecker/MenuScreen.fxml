@@ -22,16 +22,20 @@
                   <Font name="Phosphate Inline" size="18.0" />
                </font>
             </Button>
-            <Label layoutX="569.0" layoutY="13.0" text="Menu" textFill="WHITE" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="15.0">
-               <font>
-                  <Font name="Phosphate Inline" size="72.0" />
-               </font>
-            </Label>
+            <HBox alignment="CENTER" layoutX="540.0" layoutY="9.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="9.0">
+               <children>
+                  <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="88.0" prefWidth="179.0" text="Menu" textAlignment="CENTER" textFill="WHITE" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font name="Phosphate Inline" size="72.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
       <HBox layoutX="84.0" layoutY="159.0" prefHeight="460.0" prefWidth="1125.0" spacing="32.0" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="71.0" AnchorPane.rightAnchor="71.0" AnchorPane.topAnchor="160.0">
          <children>
-            <Button fx:id="uploadFilesButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#moveToUploadPage" prefHeight="458.0" prefWidth="358.0" style="-fx-background-color: #6082B6; -fx-background-radius: 45;" text="Upload Files" textFill="#c7e8fb" HBox.hgrow="ALWAYS">
+            <Button fx:id="uploadFilesButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#moveToUploadPage" prefHeight="458.0" prefWidth="358.0" style="-fx-background-color: #6082B6; -fx-background-radius: 45;" text="Upload Files" textAlignment="CENTER" textFill="#c7e8fb" wrapText="true" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
