@@ -24,12 +24,12 @@ public class LogInValidator {
             }
 
             if(!db.findUser(username, password)){
-                if(newOrOldUser == 0) {
-                    db.insertUser(username, password);
-                    db.setBoardID(username, password, fName, lName);
-                    db.commit();
-                    DialogUtils.dialogPopUp("Created account successfully", "Please proceed", currStage);
-                    return true;
+                if(newOrOldUser == 0 && db.getUserID(fName, lName)) {
+                        db.insertUser(username, password);
+                        db.setBoardID(username, password, fName, lName);
+                        db.commit();
+                        DialogUtils.dialogPopUp("Created account successfully", "Please proceed", currStage);
+                        return true;
                 }
                 else{
                     DialogUtils.dialogPopUp("Username or password is wrong, please retry", "Retry information entry", currStage);

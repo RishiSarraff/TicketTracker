@@ -88,9 +88,11 @@ public class  DatabaseDriver {
 
     public boolean findUser(String user, String pass) throws SQLException{
         try{
+            String username = user.toLowerCase();
+            String password = pass.toLowerCase();
             String findString = String.format("""
-                    SELECT Username, Password From Users WHERE Username = '%s' AND Password = '%s'
-                     """, user, pass);
+                    SELECT Username, Password From Users WHERE LOWER(Username) = '%s' AND LOWER(Password) = '%s'
+                     """, username, password);
             var statement = connection.createStatement();
 
             ResultSet rs = statement.executeQuery(findString);
@@ -108,7 +110,7 @@ public class  DatabaseDriver {
         try{
             String createBoardString = "CREATE TABLE IF NOT EXISTS Board(" +
                     "MemberID INTEGER PRIMARY KEY NOT NULL," +
-                    "UserID INTEGER, " +
+                    "UserID INTEGER," +
                     "PermissionLevel TEXT NOT NULL, " +
                     "ChairPosition TEXT NOT NULL," +
                     "FirstName TEXT NOT NULL," +
@@ -130,8 +132,9 @@ public class  DatabaseDriver {
                 Member currMember = boardList.get(i);
                 String memberPermissionLevel = currMember.getPermissionLevel();
                 String memberPosition = currMember.getBoardPosition();
-                String firstName = currMember.getFirstName();
-                String lastName = currMember.getLastName();
+                String firstName = capitalizeFirstLetter(currMember.getFirstName());
+                String lastName = capitalizeFirstLetter(currMember.getLastName());
+
                 String boardInfo = String.format("""
                                                 INSERT INTO Board(PermissionLevel, ChairPosition, FirstName, LastName)
                                                 values ('%s', '%s', '%s', '%s');
@@ -148,11 +151,20 @@ public class  DatabaseDriver {
         }
     }
 
+    public String capitalizeFirstLetter(String str){
+        if(str == null || str.isEmpty()){
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
+    }
+
     public String getPermissionLevel(String firstName, String lastName) throws SQLException {
         try{
+            String fName = firstName.toLowerCase();
+            String lName = lastName .toLowerCase();
             String pLevel = String.format("""
-                                          SELECT PermissionLevel FROM Board WHERE FirstName = '%s' AND LastName = '%s'
-                                          """, firstName, lastName);
+                                          SELECT PermissionLevel FROM Board WHERE LOWER(FirstName) = '%s' AND LOWER(LastName) = '%s'
+                                          """, fName, lName);
 
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(pLevel);
@@ -194,6 +206,31 @@ public class  DatabaseDriver {
         }
         catch(SQLException e){
 
+        }
+    }
+
+    public boolean getUserID(String fName, String lName) throws SQLException {
+        try{
+            String firstName = fName.toLowerCase();
+            String lastName = lName.toLowerCase();
+
+            String getID = String.format("""
+                                          SELECT UserID FROM Board WHERE LOWER(FirstName) = '%s' AND LOWER(LastName) = '%s'
+                                          """, firstName, lastName);
+
+            Statement statement = connection.createStatement();
+            ResultSet answer = statement.executeQuery(getID);
+
+                int userID = answer.getInt("UserID");
+                if (answer.wasNull()) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+        }
+        catch(SQLException e){
+            throw e;
         }
     }
 

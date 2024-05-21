@@ -29,9 +29,12 @@ public class BoardParser {
             }
             db.createUserTable();
 
-
             db.createBoardTable();
             db.insertIntoBoardTable(boardList);
+
+//            db.clearTable("Board");
+//            db.clearTable("Users");
+
 
             db.commit();
         }

@@ -68,16 +68,19 @@ public class MainController implements SceneController {
         @FXML
         private TextField userLastNameField;
 
+        @FXML
+        private Button backButton;
+
         private static int newOrOld;
 
         private Stage currStage;
 
         private MainController mc;
 
+
+
         public User currUser;
 
-        public String fName;
-        public String lName;
 
         public void setCurrentStage(Stage stage){
                 currStage = stage;
@@ -136,8 +139,8 @@ public class MainController implements SceneController {
                 }
                 else if(event.getSource() == pinSubmit){
                         String pin = validationNumberField.getText();
-                        String userFirstName = userFirstNameField.getText();
-                        String userLastName = userLastNameField.getText();
+                        String userFirstName = userFirstNameField.getText().trim();
+                        String userLastName = userLastNameField.getText().trim();
                         currUser = new User(userFirstName, userLastName);
                         currUser.setCurrStage(currStage);
                         String userAccessLevel = currUser.getUserAccess();
@@ -164,6 +167,14 @@ public class MainController implements SceneController {
                 }
                 userIdentityPane.setVisible(false);
                 validPane.setVisible(true);
+        }
+
+        @FXML
+        void goBackToUserType(ActionEvent event){
+                if(event.getSource() == backButton){
+                        userIdentityPane.setVisible(true);
+                        validPane.setVisible(false);
+                }
         }
 
 
