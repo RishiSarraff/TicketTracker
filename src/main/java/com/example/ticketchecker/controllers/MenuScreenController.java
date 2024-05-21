@@ -5,6 +5,7 @@ import com.example.ticketchecker.model.smallFeatures.SceneSwitch;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,6 +25,9 @@ public class MenuScreenController implements SceneController {
     private Button uploadFilesButton;
 
     @FXML
+    private Label welcomeLabel;
+
+    @FXML
     private Button logOutButton;
 
     @FXML
@@ -40,7 +44,10 @@ public class MenuScreenController implements SceneController {
     @FXML
     public void initialize(){
 
+        String firstName = MainController.currUser.getFirstName();
+
         msc = new MenuScreenController();
+        welcomeLabel.setText("Welcome " + firstName);
 
     }
 

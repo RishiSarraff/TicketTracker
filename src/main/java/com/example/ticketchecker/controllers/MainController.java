@@ -82,7 +82,7 @@ public class MainController implements SceneController {
 
 
 
-        public User currUser;
+        public static User currUser;
 
 
         public void setCurrentStage(Stage stage){
@@ -126,7 +126,10 @@ public class MainController implements SceneController {
                 if(event.getSource() == submitButton) {
                         String username = usernameField.getText();
                         String password = passwordField.getText();
+                        String userFirstName = userFirstNameField.getText();
+                        String userLastName = userLastNameField.getText();
                         if(LogInValidator.validateUser(newOrOld, username, password, currStage, currUser.getFirstName(), currUser.getLastName())){
+                                currUser.getUserInstance().setUserDetails(username, userFirstName, userLastName);
                                 if(newOrOld == 0){
                                         userIdentityPane.setVisible(true);
                                         validPane.setVisible(false);
@@ -145,6 +148,7 @@ public class MainController implements SceneController {
                         String userFirstName = userFirstNameField.getText().trim();
                         String userLastName = userLastNameField.getText().trim();
                         currUser = new User(userFirstName, userLastName);
+                        currUser.setUserDetails(usernameField.getText(), userFirstName, userLastName);
                         currUser.setCurrStage(currStage);
                         String userAccessLevel = currUser.getUserAccess();
                         if(LogInValidator.validatePIN(pin, currStage) && userAccessLevel !=null){

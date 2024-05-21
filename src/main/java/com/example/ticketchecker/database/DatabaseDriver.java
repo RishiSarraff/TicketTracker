@@ -193,12 +193,15 @@ public class  DatabaseDriver {
 
     public void setBoardID(String username, String password, String firstName, String lastName) {
         try{
+
+            String fName = firstName.toLowerCase();
+            String lName = lastName.toLowerCase();
             // we get the user id from users table and change board user id to the user id value.
             String setter = String.format("""
                                           UPDATE Board SET UserID =
                                           (SELECT UserID FROM Users WHERE Username = '%s' AND Password = '%s')
-                                          WHERE FirstName = '%s' AND LastName = '%s'
-                                          """, username, password, firstName, lastName);
+                                          WHERE LOWER(FirstName) = '%s' AND LOWER(LastName) = '%s'
+                                          """, username, password, fName, lName);
 
             Statement statement = connection.createStatement();
             statement.executeUpdate(setter);
@@ -227,7 +230,6 @@ public class  DatabaseDriver {
                 } else {
                     return false;
                 }
-
         }
         catch(SQLException e){
             throw e;

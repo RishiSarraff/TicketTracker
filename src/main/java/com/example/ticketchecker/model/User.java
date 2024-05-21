@@ -9,16 +9,33 @@ import java.sql.SQLException;
 
 public class User {
 
+    private static User instance;
     private String firstName;
+    private String username;
+
     private String lastName;
 
     private Stage currStage;
 
     static DatabaseDriver db = DatabaseDriver.getInstance("TickCheckDB");
 
+    public User(){}
     public User(String firstName, String lastName){
         setFirstName(firstName);
         setLastName(lastName);
+    }
+
+    public User getUserInstance(){
+        if(instance == null){
+            instance = new User();
+        }
+        return instance;
+    }
+
+    public void setUserDetails(String username, String firstName, String lastName) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public String getFirstName() {
@@ -27,6 +44,10 @@ public class User {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getLastName() {
@@ -58,4 +79,6 @@ public class User {
             throw new RuntimeException(e);
         }
     }
+
+
 }
