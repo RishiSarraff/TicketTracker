@@ -17,7 +17,7 @@
          <children>
             <Button fx:id="closeButton" cancelButton="true" defaultButton="true" layoutX="858.0" layoutY="61.0" mnemonicParsing="false" onAction="#closeProgram" style="-fx-background-color: white; -fx-background-radius: 30;" text="X" textFill="#6082b6" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                <font>
-                  <Font name="Phosphate Inline" size="18.0" />
+                  <Font name="Phosphate Inline" size="24.0" />
                </font>
             </Button>
             <Button fx:id="logOutButton" layoutX="56.0" layoutY="41.0" mnemonicParsing="false" onAction="#moveToLogIn" style="-fx-background-color: white; -fx-background-radius: 30;" text="Log Out" textFill="#6082b6" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
