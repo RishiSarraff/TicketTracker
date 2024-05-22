@@ -11,6 +11,9 @@ module com.example.ticketchecker {
     requires com.google.api.services.sheets;
     requires org.apache.commons.text;
     requires org.json;
+    requires com.google.gson;
+    requires jdk.httpserver;
+
 
 
     opens com.example.ticketchecker to javafx.fxml;

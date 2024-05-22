@@ -16,6 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 public class UploadSheetController implements SceneController{
 
@@ -96,7 +97,7 @@ public class UploadSheetController implements SceneController{
     }
 
     @FXML
-    void validateSheetInformation(ActionEvent event){
+    void validateSheetInformation(ActionEvent event) throws GeneralSecurityException, IOException {
         if(event.getSource() == submitButton){
             String url = googleSheetsTextField.getText();
             String fileName = fileNameTextField.getText();
@@ -128,6 +129,8 @@ public class UploadSheetController implements SceneController{
                 // all inputs are valid, so we pass them into the sheets interpreter which returns
                 // interprets them properly and returns a error pop up through sheets interpreter if not allowdd,
                 SheetDetailsValidator.sendToSheetsInterpreter(fileName, spreadsheetID, sheetName, cellRange);
+                fillOutFormPane.setVisible(false);
+                spreadSheetPane.setVisible(true);
             }
         }
     }

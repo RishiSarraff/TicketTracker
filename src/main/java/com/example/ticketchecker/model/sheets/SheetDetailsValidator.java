@@ -80,7 +80,7 @@ public class SheetDetailsValidator {
         return result;
     }
 
-    public static void sendToSheetsInterpreter(String fileName, String spreadsheetID, String sheetName, String cellRange) {
+    public static void sendToSheetsInterpreter(String fileName, String spreadsheetID, String sheetName, String cellRange) throws GeneralSecurityException, IOException {
         // here is where we interpret the IOExceptions and errors happening when trying to process the sheets and get acces to them
         try{
             SheetsInterpreter sheetsReader = new SheetsInterpreter(fileName, spreadsheetID, sheetName, cellRange);
@@ -99,11 +99,13 @@ public class SheetDetailsValidator {
                 for(List row : values){
                     // we will currently System.out to the console, but we should send each row to the javafx application along with a checkbox or something.
                     System.out.println(row);
+                    // Lets pass in each of the fields into an object and create a list of those objects
                 }
             }
 
         }
         catch(IOException | GeneralSecurityException e){
+            throw e;
 
         }
     }
