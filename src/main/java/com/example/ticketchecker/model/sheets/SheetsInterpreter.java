@@ -32,10 +32,10 @@ public class SheetsInterpreter {
     private static String cellRange = "";
 
     public SheetsInterpreter(){ // default this to the demo doc with default values.
-        setApplicationName("ISA First Party Tickets");
-        setSheetID("1nDahXjR5vxjGbdUfkFdvQ05eyWI4EkLNVxz5UT9On4A");
-        setSheetName("ISA First Party Tickets");
-        setCellRange("A2:J400");
+        setApplicationName("");
+        setSheetID("");
+        setSheetName("");
+        setCellRange("");
     }
 
     public SheetsInterpreter(String applicationName, String sheetID, String sheetName, String cellRange){
@@ -83,7 +83,7 @@ public class SheetsInterpreter {
 
 
     private static Credential authorize() throws IOException, GeneralSecurityException{
-        InputStream in = SheetsInterpreter.class.getResourceAsStream("com/example/ticketchecker/credentials.json");
+        InputStream in = SheetsInterpreter.class.getResourceAsStream("/credentials.json");
         GoogleClientSecrets client = GoogleClientSecrets.load(
                 GsonFactory.getDefaultInstance(), new InputStreamReader(in)
         );
@@ -103,7 +103,7 @@ public class SheetsInterpreter {
 
     }
 
-    private static Sheets getService() throws IOException, GeneralSecurityException{
+    static Sheets getService() throws IOException, GeneralSecurityException{
         Credential creds = authorize();
         return new Sheets.Builder(GoogleNetHttpTransport.newTrustedTransport(),
                 GsonFactory.getDefaultInstance(), creds)
@@ -111,11 +111,13 @@ public class SheetsInterpreter {
                 .build();
     }
 
-    public static void main(String[] args) throws IOException, GeneralSecurityException{
-        sheetsService = getService();
-        String fetchVals = sheetName + "!" + cellRange;
+    public static void main(String[] args) throws GeneralSecurityException, IOException {
+        SheetsInterpreter sheetsReader = new SheetsInterpreter("ISA First Party Tickets", "1nDahXjR5vxjGbdUfkFdvQ05eyWI4EkLNVxz5UT9On4A", "ISA First Party Tickets", "A2:J334");
+        Sheets service = sheetsReader.getService();
 
-        ValueRange response = sheetsService.spreadsheets().values().get(SPREADSHEET_ID, fetchVals).execute();
+        String fetchVals = sheetsReader.getSheetName() + "!" + sheetsReader.getCellRange();
+
+        ValueRange response = service.spreadsheets().values().get("1nDahXjR5vxjGbdUfkFdvQ05eyWI4EkLNVxz5UT9On4A", fetchVals).execute();
 
         List<List<Object>> values = response.getValues();
 
@@ -128,8 +130,6 @@ public class SheetsInterpreter {
                 System.out.println(row);
             }
         }
-
-
     }
 
 }

@@ -1,7 +1,10 @@
 package com.example.ticketchecker.controllers;
 
+import com.example.ticketchecker.model.sheets.SheetDetailsValidator;
 import com.example.ticketchecker.model.smallFeatures.CloseProgram;
+import com.example.ticketchecker.model.smallFeatures.DialogUtils;
 import com.example.ticketchecker.model.smallFeatures.SceneSwitch;
+import com.google.api.services.sheets.v4.model.Sheet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -99,9 +102,33 @@ public class UploadSheetController implements SceneController{
             String fileName = fileNameTextField.getText();
             String sheetName = sheetNameTextField.getText();
             String cellRange = cellRangeTextField.getText();
+            String spreadsheetID = SheetDetailsValidator.spreadsheetIDGetter(url);
 
-            // we will now validate the textfield infomation
 
+            if(url == null || url.isEmpty()){
+                DialogUtils.dialogPopUp("URL is empty please, enter a nonempty URL", "Empty URL", currStage);
+            }
+
+            else if(spreadsheetID == null){
+                DialogUtils.dialogPopUp("This is an invalid url re-enter the url", "Invalid URL", currStage);
+                googleSheetsTextField.setText("");
+            }
+
+            else if(!SheetDetailsValidator.sheetNameValidator(sheetName, fileName)){
+                // if the sheet name is not similar to the filename
+                DialogUtils.dialogPopUp("Sheet name and file name do not match or the names are empty, check your inputs again", "Retype sheet information", currStage);
+            }
+
+            else if(!SheetDetailsValidator.cellRangeValidator(cellRange)){
+                // if the cell range is not a validate input then that is not allowed
+                DialogUtils.dialogPopUp("The cell range format is off, it should follow exactly something along the lines of A2:J100", "Cell Range Input Error", currStage);
+            }
+
+            else{
+                // all inputs are valid, so we pass them into the sheets interpreter which returns
+                // interprets them properly and returns a error pop up through sheets interpreter if not allowdd,
+                SheetDetailsValidator.sendToSheetsInterpreter(fileName, spreadsheetID, sheetName, cellRange);
+            }
         }
     }
 
