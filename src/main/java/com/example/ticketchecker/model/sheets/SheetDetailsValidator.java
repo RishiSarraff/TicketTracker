@@ -1,10 +1,15 @@
 package com.example.ticketchecker.model.sheets;
+import com.example.ticketchecker.model.TicketSubmission;
 import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.security.Timestamp;
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,11 +17,11 @@ import java.util.regex.Pattern;
 
 public class SheetDetailsValidator {
 
-    public static boolean sheetNameValidator(String nameOfSheet, String nameOfApp){
-        if(nameOfSheet == null || nameOfSheet.isEmpty()){
+    public static boolean sheetNameValidator(String nameOfSheet, String nameOfApp) {
+        if (nameOfSheet == null || nameOfSheet.isEmpty()) {
             return false;
         }
-        if(nameOfApp == null || nameOfApp.isEmpty()){
+        if (nameOfApp == null || nameOfApp.isEmpty()) {
             return false;
         }
 
@@ -27,24 +32,23 @@ public class SheetDetailsValidator {
 
         int diffBetweenStrings = distance.apply(processedSheet, processedSheetApp);
 
-        int maxTitleLength =  Math.max(processedSheet.length(), processedSheetApp.length());
+        int maxTitleLength = Math.max(processedSheet.length(), processedSheetApp.length());
 
-        double similarityProportion = 1.0 - (double) diffBetweenStrings/maxTitleLength;
+        double similarityProportion = 1.0 - (double) diffBetweenStrings / maxTitleLength;
 
-        if(similarityProportion > 0.65){
+        if (similarityProportion > 0.65) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    public static boolean cellRangeValidator(String rangeOfCells){
-        if(rangeOfCells == null || rangeOfCells.isEmpty()){
+    public static boolean cellRangeValidator(String rangeOfCells) {
+        if (rangeOfCells == null || rangeOfCells.isEmpty()) {
             return false;
         }
-        String regPattern = "^[A-P]([2-9]|([1-9]\\d{0,2}))" +
-                            ":[A-P]([1-9]\\d{0,2})$";
+        String regPattern = "^[B-P]([2-9]|([1-9]\\d{0,2}))" +
+                ":[A-P]([1-9]\\d{0,2})$";
 
         String range = rangeOfCells.toUpperCase();
 
@@ -52,27 +56,25 @@ public class SheetDetailsValidator {
 
         Matcher matcher = pattern.matcher(range);
 
-        if(matcher.matches()){
+        if (matcher.matches()) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
     public static String spreadsheetIDGetter(String url) {
-        if(url == null || url.isEmpty()){
+        if (url == null || url.isEmpty()) {
             return null;
         }
         String delimiter1 = "/d/";
         String delimiter2 = "/edit";
-        int firstPivot = url.indexOf(delimiter1)+3;
+        int firstPivot = url.indexOf(delimiter1) + 3;
         int secondPivot = url.indexOf(delimiter2);
 
-        if(firstPivot > url.length()){
+        if (firstPivot > url.length()) {
             return null;
-        }
-        else if(firstPivot == 2 || secondPivot == -1){
+        } else if (firstPivot == 2 || secondPivot == -1) {
             return null;
         }
 
@@ -80,9 +82,10 @@ public class SheetDetailsValidator {
         return result;
     }
 
-    public static void sendToSheetsInterpreter(String fileName, String spreadsheetID, String sheetName, String cellRange) throws GeneralSecurityException, IOException {
+    public static List<TicketSubmission> sendToSheetsInterpreter(String fileName, String spreadsheetID, String sheetName, String cellRange) throws GeneralSecurityException, IOException {
         // here is where we interpret the IOExceptions and errors happening when trying to process the sheets and get acces to them
-        try{
+        try {
+            List<TicketSubmission> finalList = new ArrayList<>();
             SheetsInterpreter sheetsReader = new SheetsInterpreter(fileName, spreadsheetID, sheetName, cellRange);
             Sheets service = sheetsReader.getService();
 
@@ -92,21 +95,24 @@ public class SheetDetailsValidator {
 
             List<List<Object>> values = response.getValues();
 
-            if(values == null || values.isEmpty()){
+            if (values == null || values.isEmpty()) {
                 System.out.println("No data found.");
-            }
-            else{
-                for(List row : values){
-                    // we will currently System.out to the console, but we should send each row to the javafx application along with a checkbox or something.
-                    System.out.println(row);
-                    // Lets pass in each of the fields into an object and create a list of those objects
+            } else {
+                for (List<Object> row : values) {
+                    TicketSubmission rowObject = TicketProcessor.rowProcessor(row);
+                    finalList.add(rowObject);
                 }
             }
+            System.out.println(finalList);
+            return finalList;
 
-        }
-        catch(IOException | GeneralSecurityException e){
+        } catch (IOException | GeneralSecurityException e) {
             throw e;
 
         }
+    }
+
+    public static void main(String[] args) throws GeneralSecurityException, IOException {
+        SheetDetailsValidator.sendToSheetsInterpreter("testingData", "1gibwcsnJv55InYKDnXhGxftsIOUVjeSDX2X0oPqUb_M", "testingData", "B2:I334");
     }
 }

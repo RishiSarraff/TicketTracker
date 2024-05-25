@@ -1,22 +1,25 @@
 package com.example.ticketchecker.controllers;
 
+import com.example.ticketchecker.model.TicketSubmission;
 import com.example.ticketchecker.model.sheets.SheetDetailsValidator;
 import com.example.ticketchecker.model.smallFeatures.CloseProgram;
 import com.example.ticketchecker.model.smallFeatures.DialogUtils;
 import com.example.ticketchecker.model.smallFeatures.SceneSwitch;
 import com.google.api.services.sheets.v4.model.Sheet;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.List;
 
 public class UploadSheetController implements SceneController{
 
@@ -40,6 +43,9 @@ public class UploadSheetController implements SceneController{
 
     @FXML
     private ImageView isaImageView;
+
+    @FXML
+    private ListView<HBox> mainSheetsListView;
 
     @FXML
     private Button logOutButton;
@@ -122,17 +128,52 @@ public class UploadSheetController implements SceneController{
 
             else if(!SheetDetailsValidator.cellRangeValidator(cellRange)){
                 // if the cell range is not a validate input then that is not allowed
-                DialogUtils.dialogPopUp("The cell range format is off, it should follow exactly something along the lines of A2:J100", "Cell Range Input Error", currStage);
+                DialogUtils.dialogPopUp("The cell range format is off, it should start from column B and follow this format B2:J100", "Cell Range Input Error", currStage);
             }
 
             else{
                 // all inputs are valid, so we pass them into the sheets interpreter which returns
                 // interprets them properly and returns a error pop up through sheets interpreter if not allowdd,
-                SheetDetailsValidator.sendToSheetsInterpreter(fileName, spreadsheetID, sheetName, cellRange);
+                List<TicketSubmission> fetchedDataRows = SheetDetailsValidator.sendToSheetsInterpreter(fileName, spreadsheetID, sheetName, cellRange);
+
+                ObservableList<TicketSubmission> obsList = FXCollections.observableList(fetchedDataRows);
+
+                createHBoxes(obsList);
+
+
+                // insert this list into the listview
                 fillOutFormPane.setVisible(false);
                 spreadSheetPane.setVisible(true);
             }
         }
     }
+
+    private void createHBoxes(ObservableList<TicketSubmission> obsList) {
+        for(TicketSubmission tick : obsList){
+            Label currLabel = new Label();
+            HBox ticketBox = new HBox();
+            currLabel.setText("Email: " + tick.getEmailAddress()+ "\t" + "\t" +
+                    "Name: " + tick.getFirstName() + " " + tick.getLastName()+ "\t"+"\t" +
+                    "Year: " + tick.getYear() + "\t"+"\t" +
+                    "Member Status: " + tick.getMemberStatus()+ "\t"+"\t" +
+                    "Payment Option: " + tick.getPaymentOption()+"\t"+"\t" +
+                    "Phone Number: " + tick.getPhoneNumber());
+
+            ComboBox<String> dropdown = new ComboBox<>();
+            dropdown.getItems().addAll("Paid", "Email Sent", "Reset");
+            dropdown.setOnAction( e -> {
+                    String typeOfHighlight = dropdown.getValue();
+
+                    handleColorChange(typeOfHighlight, tick);
+            });
+
+            ticketBox.getChildren().addAll(dropdown, currLabel);
+            mainSheetsListView.getItems().add(ticketBox);
+        }
+    }
+
+    private void handleColorChange(String typeOfHighlight, TicketSubmission tick) {
+    }
+
 
 }

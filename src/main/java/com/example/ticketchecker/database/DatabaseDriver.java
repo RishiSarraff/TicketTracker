@@ -1,6 +1,7 @@
 package com.example.ticketchecker.database;
 
 import com.example.ticketchecker.model.Member;
+import com.example.ticketchecker.model.TicketSubmission;
 
 import java.sql.*;
 import java.util.List;
@@ -236,4 +237,50 @@ public class  DatabaseDriver {
         }
     }
 
+    public void createTicketTable() throws SQLException {
+        try{
+            String ticketTableDb = "CREATE TABLE IF NOT EXISTS Tickets(" +
+                    "PhoneNumber LONG PRIMARY KEY," +
+                    "Email TEXT NOT NULL," +
+                    "FirstName TEXT NOT NULL, " +
+                    "LastName TEXT NOT NULL, " +
+                    "Year INTEGER NOT NULL, " +
+                    "MemberStatus TEXT NOT NULL, " +
+                    "PaymentOption TEXT NOT NULL" +
+                    ")";
+
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(ticketTableDb);
+        }
+        catch(SQLException e){
+            rollback();
+            throw e;
+        }
+    }
+
+    public void insertIntoTable(List<TicketSubmission> finalList) throws SQLException {
+        try {
+            for (TicketSubmission tick : finalList) {
+                String email = tick.getEmailAddress();
+                String fName = tick.getFirstName();
+                String lName = tick.getLastName();
+                int year = tick.getYear();
+                String status = tick.getMemberStatus();
+                String payment = tick.getPaymentOption();
+                long number = tick.getPhoneNumber();
+
+                String insertString = String.format("""
+                    INSERT into Tickets(PhoneNumber, Email, FirstName, LastName, Year, MemberStatus, PaymentOption)
+                     values (%d, '%s', '%s', '%s', %d, '%s', '%s');
+                     """, number, email, fName, lName, year, status, payment);
+
+                var statement = connection.createStatement();
+                statement.executeUpdate(insertString);
+            }
+        }
+        catch(SQLException e){
+            rollback();
+            throw e;
+        }
+    }
 }

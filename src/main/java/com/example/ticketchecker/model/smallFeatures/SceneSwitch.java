@@ -22,11 +22,7 @@ public class SceneSwitch {
         currStage.setTitle(title);
         currStage.setScene(newScene);
 
-
-
         currStage.show();
-
     }
-
 
 }
