@@ -2,9 +2,11 @@ package com.example.ticketchecker.controllers;
 
 import com.example.ticketchecker.model.TicketSubmission;
 import com.example.ticketchecker.model.sheets.SheetDetailsValidator;
+import com.example.ticketchecker.model.sheets.SheetsInterpreter;
 import com.example.ticketchecker.model.smallFeatures.CloseProgram;
 import com.example.ticketchecker.model.smallFeatures.DialogUtils;
 import com.example.ticketchecker.model.smallFeatures.SceneSwitch;
+import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.Sheet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UploadSheetController implements SceneController{
@@ -34,6 +37,15 @@ public class UploadSheetController implements SceneController{
 
     @FXML
     private TextField fileNameTextField;
+
+    @FXML
+    private TextField firstNameSearch;
+
+    @FXML
+    private TextField lastNameSearch;
+
+    @FXML
+    private Button getPeopleButton;
 
     @FXML
     private StackPane fillOutFormPane;
@@ -67,6 +79,8 @@ public class UploadSheetController implements SceneController{
 
     @FXML
     private Button goBackButton;
+
+    private SheetsInterpreter si;
 
     public void initialize(){
         usc = new UploadSheetController();
@@ -128,17 +142,20 @@ public class UploadSheetController implements SceneController{
 
             else if(!SheetDetailsValidator.cellRangeValidator(cellRange)){
                 // if the cell range is not a validate input then that is not allowed
-                DialogUtils.dialogPopUp("The cell range format is off, it should start from column B and follow this format B2:J100", "Cell Range Input Error", currStage);
+                DialogUtils.dialogPopUp("The cell range format is off, it should start ONLY from column B and follow this format B2:J100", "Cell Range Input Error", currStage);
             }
 
             else{
-                // all inputs are valid, so we pass them into the sheets interpreter which returns
-                // interprets them properly and returns a error pop up through sheets interpreter if not allowdd,
-                List<TicketSubmission> fetchedDataRows = SheetDetailsValidator.sendToSheetsInterpreter(fileName, spreadsheetID, sheetName, cellRange);
-
-                ObservableList<TicketSubmission> obsList = FXCollections.observableList(fetchedDataRows);
-
-                createHBoxes(obsList);
+                    si = new SheetsInterpreter();
+                    si.setApplicationName(fileName);
+                    si.setCellRange(cellRange);
+                    si.setSheetID(spreadsheetID);
+                    si.setSheetName(sheetName);
+                    // all inputs are valid, so we pass them into the sheets interpreter which returns
+                    // interprets them properly and returns a error pop up through sheets interpreter if not allowdd,
+                    List<TicketSubmission> fetchedDataRows = SheetDetailsValidator.sendToSheetsInterpreter(fileName, spreadsheetID, sheetName, cellRange);
+                    ObservableList<TicketSubmission> obsList = FXCollections.observableList(fetchedDataRows);
+                    createHBoxes(obsList);
 
 
                 // insert this list into the listview
@@ -149,6 +166,7 @@ public class UploadSheetController implements SceneController{
     }
 
     private void createHBoxes(ObservableList<TicketSubmission> obsList) {
+        mainSheetsListView.getItems().clear();
         for(TicketSubmission tick : obsList){
             Label currLabel = new Label();
             HBox ticketBox = new HBox();
@@ -175,5 +193,47 @@ public class UploadSheetController implements SceneController{
     private void handleColorChange(String typeOfHighlight, TicketSubmission tick) {
     }
 
+    @FXML
+    private void filterListViewSettings(ActionEvent event) throws GeneralSecurityException, IOException {
 
+        if(event.getSource() == getPeopleButton) {
+            String fName = firstNameSearch.getText();
+            String lName = lastNameSearch.getText();
+
+            List<TicketSubmission> fetchedData = SheetDetailsValidator.sendToSheetsInterpreter(si.getApplicationName(), si.getSheetID(), si.getSheetName(), si.getCellRange());
+            List<TicketSubmission> filteredData = new ArrayList<>();
+
+            for (TicketSubmission tick : fetchedData) {
+                if (fName.equals("") && lName.equals("")) {
+                    filteredData.add(tick);
+                } else if (fName.equals("") && !lName.equals("")) {
+                    String processedDataLastName = lName.toLowerCase().trim();
+                    String processedLName = tick.getLastName().toLowerCase();
+
+                    if (processedDataLastName.equals(processedLName)) {
+                        filteredData.add(tick);
+                    }
+                } else if (!fName.equals("") && lName.equals("")) {
+                    String processedDataFirstName = fName.toLowerCase().trim();
+                    String processedFName = tick.getFirstName().toLowerCase();
+
+                    if (processedDataFirstName.equals(processedFName)) {
+                        filteredData.add(tick);
+                    }
+                } else {
+                    String processedDataFirstName = fName.toLowerCase().trim();
+                    String processedFName = tick.getFirstName().toLowerCase();
+                    String processedDataLastName = lName.toLowerCase().trim();
+                    String processedLName = tick.getLastName().toLowerCase();
+
+                    if (processedDataFirstName.equals(processedFName) && processedDataLastName.equals(processedLName)) {
+                        filteredData.add(tick);
+                    }
+                }
+            }
+            ObservableList<TicketSubmission> obsList = FXCollections.observableList(filteredData);
+            createHBoxes(obsList);
+        }
+
+    }
 }

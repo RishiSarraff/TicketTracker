@@ -137,9 +137,43 @@
                <children>
                   <ListView fx:id="mainSheetsListView" prefHeight="200.0" prefWidth="200.0" style="-fx-background-radius: 30;">
                      <StackPane.margin>
-                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="90.0" />
                      </StackPane.margin>
                   </ListView>
+                  <TextField fx:id="firstNameSearch" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" style="-fx-background-radius: 30;">
+                     <StackPane.margin>
+                        <Insets bottom="440.0" right="500.0" />
+                     </StackPane.margin>
+                  </TextField>
+                  <TextField fx:id="lastNameSearch" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" style="-fx-background-radius: 30;">
+                     <StackPane.margin>
+                        <Insets bottom="440.0" left="350.0" />
+                     </StackPane.margin>
+                  </TextField>
+                  <Button fx:id="getPeopleButton" mnemonicParsing="false" onAction="#filterListViewSettings" style="-fx-background-color: white; -fx-background-radius: 30;" text="Search" textFill="#6082b6">
+                     <StackPane.margin>
+                        <Insets bottom="440.0" left="950.0" />
+                     </StackPane.margin>
+                     <font>
+                        <Font name="Phosphate Inline" size="24.0" />
+                     </font>
+                  </Button>
+                  <Label text="First Name:" textFill="WHITE">
+                     <font>
+                        <Font name="Phosphate Inline" size="24.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets bottom="440.0" right="850.0" />
+                     </StackPane.margin>
+                  </Label>
+                  <Label text="Last Name:" textFill="WHITE">
+                     <font>
+                        <Font name="Phosphate Inline" size="24.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets bottom="440.0" />
+                     </StackPane.margin>
+                  </Label>
                </children></StackPane>
          </children>
       </StackPane>
