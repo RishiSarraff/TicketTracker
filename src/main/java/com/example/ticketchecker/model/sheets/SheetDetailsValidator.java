@@ -48,7 +48,7 @@ public class SheetDetailsValidator {
             return false;
         }
         String regPattern = "^B([2-9]|([1-9]\\d{0,2}))" +
-                ":[A-P]([1-9]\\d{0,2})$";
+                ":[B-P]([1-9]\\d{0,2})$";
 
         String range = rangeOfCells.toUpperCase();
 

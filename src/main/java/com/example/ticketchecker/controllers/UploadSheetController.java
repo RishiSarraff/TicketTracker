@@ -170,12 +170,7 @@ public class UploadSheetController implements SceneController{
         for(TicketSubmission tick : obsList){
             Label currLabel = new Label();
             HBox ticketBox = new HBox();
-            currLabel.setText("Email: " + tick.getEmailAddress()+ "\t" + "\t" +
-                    "Name: " + tick.getFirstName() + " " + tick.getLastName()+ "\t"+"\t" +
-                    "Year: " + tick.getYear() + "\t"+"\t" +
-                    "Member Status: " + tick.getMemberStatus()+ "\t"+"\t" +
-                    "Payment Option: " + tick.getPaymentOption()+"\t"+"\t" +
-                    "Phone Number: " + tick.getPhoneNumber());
+            labelSetter(currLabel, tick);
 
             ComboBox<String> dropdown = new ComboBox<>();
             dropdown.getItems().addAll("Paid", "Email Sent", "Reset");
@@ -188,6 +183,38 @@ public class UploadSheetController implements SceneController{
             ticketBox.getChildren().addAll(dropdown, currLabel);
             mainSheetsListView.getItems().add(ticketBox);
         }
+    }
+
+    private void labelSetter(Label currLabel, TicketSubmission tick) {
+        StringBuilder str = new StringBuilder();
+        if(tick.getEmailAddress()!=null) {
+            str.append("Email " + tick.getEmailAddress() + "\t" + "\t");
+        }
+
+        if(tick.getFirstName()!=null && tick.getLastName() == null) {
+            str.append("Name: " + tick.getFirstName() + "\t" + "\t");
+        }
+        else if(tick.getFirstName()==null && tick.getLastName() != null) {
+            str.append("Name: " + tick.getLastName() + "\t" + "\t");
+        }
+        else if(tick.getFirstName()!=null && tick.getLastName() != null) {
+            str.append("Name: " + tick.getFirstName() + " " + tick.getLastName()+ "\t"+"\t" );
+        }
+
+        if(tick.getYear() != 0){
+            str.append("Year: " + tick.getYear() + "\t"+"\t");
+        }
+        if(tick.getMemberStatus() != null){
+            str.append("Member Status: " + tick.getMemberStatus()+ "\t"+"\t");
+        }
+        if(tick.getPaymentOption() != null){
+            str.append("Payment Option: " + tick.getPaymentOption()+"\t"+"\t");
+        }
+        if(tick.getPhoneNumber() != 0){
+            str.append("Phone Number: " + tick.getPhoneNumber());
+        }
+
+        currLabel.setText(str.toString());
     }
 
     private void handleColorChange(String typeOfHighlight, TicketSubmission tick) {

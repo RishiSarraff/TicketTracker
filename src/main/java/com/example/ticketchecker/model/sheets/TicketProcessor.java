@@ -1,9 +1,6 @@
 package com.example.ticketchecker.model.sheets;
 import com.example.ticketchecker.database.DatabaseDriver;
 import com.example.ticketchecker.model.TicketSubmission;
-import javafx.scene.layout.Pane;
-
-import java.sql.SQLException;
 import java.util.List;
 
 public class TicketProcessor {
@@ -12,22 +9,36 @@ public class TicketProcessor {
 
     public static TicketSubmission rowProcessor(List<Object> row) {
         TicketSubmission newTicket = new TicketSubmission();
+        int lengthRow = row.size();
 
-        String email = (String) row.get(0);
-        String firstName = (String) row.get(1);
-        String lastName = (String) row.get(2);
-        int year = yearDecider((String) row.get(3));
-        String ticketOptions = (String) row.get(4);
-        String payment = (String) row.get(5);
-        String phoneNumber = (String) row.get(6);
-
-        newTicket.setEmailAddress(processEmail(email));
-        newTicket.setFirstName(firstName);
-        newTicket.setLastName(lastName);
-        newTicket.setYear(year);
-        newTicket.setMemberStatus(getMemberStatus(ticketOptions));
-        newTicket.setPaymentOption(getPaymentOption(payment));
-        newTicket.setPhoneNumber(processPhoneNumber(phoneNumber));
+        if(lengthRow > 0){
+            String email = (String) row.get(0);
+            newTicket.setEmailAddress(processEmail(email));
+        }
+        if(lengthRow >1){
+            String firstName = (String) row.get(1);
+            newTicket.setFirstName(firstName);
+        }
+        if(lengthRow >2){
+            String lastName = (String) row.get(2);
+            newTicket.setLastName(lastName);
+        }
+        if(lengthRow > 3){
+            int year = yearDecider((String) row.get(3));
+            newTicket.setYear(year);
+        }
+        if(lengthRow > 4){
+            String ticketOptions = (String) row.get(4);
+            newTicket.setMemberStatus(getMemberStatus(ticketOptions));
+        }
+        if(lengthRow > 5){
+            String payment = (String) row.get(5);
+            newTicket.setPaymentOption(getPaymentOption(payment));
+        }
+        if(lengthRow > 6){
+            String phoneNumber = (String) row.get(6);
+            newTicket.setPhoneNumber(processPhoneNumber(phoneNumber));
+        }
 
         return newTicket;
     }
