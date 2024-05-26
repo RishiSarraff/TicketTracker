@@ -56,10 +56,10 @@ dependencies {
 
     implementation 'org.json:json:20231013'
     implementation group: 'com.google.http-client', name: 'google-http-client', version: '1.44.1'
-    implementation group: 'javax.activation', name: 'activation', version: '1.1.1'
     implementation 'com.google.apis:google-api-services-gmail:v1-rev20220404-2.0.0'
 
-    implementation 'javax.mail:mail:1.4.7'
+    implementation 'com.sun.mail:jakarta.mail:2.0.1'
+
 }
 
 test {
@@ -76,4 +76,11 @@ jlink {
 
 jlinkZip {
     group = 'distribution'
+}
+
+tasks.withType(JavaExec){
+    jvmArgs += [
+            '--add-modules', 'javafx.controls,javafx.fxml',
+            '--add-reads', 'com.example.ticketchecker=ALL-UNNAMED'
+    ]
 }

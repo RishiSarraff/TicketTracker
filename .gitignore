@@ -42,3 +42,4 @@ bin/
 .DS_Store
 /src/main/resources/com/example/ticketchecker/currentBoard.json
 /src/main/resources/com/example/ticketchecker/credentials.json
+/src/main/resources/com/example/ticketchecker/clientSecretsGmail.json

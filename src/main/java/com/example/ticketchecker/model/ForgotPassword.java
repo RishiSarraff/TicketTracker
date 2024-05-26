@@ -1,7 +1,6 @@
 package com.example.ticketchecker.model;
 
 import com.example.ticketchecker.database.DatabaseDriver;
-import com.example.ticketchecker.model.sheets.SheetsInterpreter;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -15,8 +14,6 @@ import com.google.api.client.util.Base64;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
-import com.google.api.services.gmail.model.Label;
-import com.google.api.services.gmail.model.ListLabelsResponse;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -26,12 +23,29 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import com.google.api.services.gmail.model.Message;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Set;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+
+import static com.google.api.services.gmail.GmailScopes.GMAIL_SEND;
+
 
 public class ForgotPassword {
 
-    private static final JsonFactory JSON_FACTORY =  GsonFactory.getDefaultInstance();
+    private static final String senderEmailAddress = "sarraff2004@gmail.com"; // change this depending on who wants to send the email
 
-    private static final List<String> SCOPES = Collections.singletonList(GmailScopes.GMAIL_LABELS);
+    private static final JsonFactory JSON_FACTORY =  GsonFactory.getDefaultInstance();
+    private static final List<String> SCOPES = Collections.singletonList(GmailScopes.GMAIL_SEND);
+
+
 
     static DatabaseDriver db = DatabaseDriver.getInstance("TickCheckDB");
 
@@ -46,17 +60,18 @@ public class ForgotPassword {
 
             String newPassword = chairPosition+"2425";
 
-            sendEmail(firstName, userName, newPassword);
+            sendEmail(firstName, userName, newPassword, email);
 
-        } catch (SQLException e) {
+        } catch (SQLException | GeneralSecurityException | IOException | MessagingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static Credential authorize(NetHttpTransport HTTP_TRANSPORT) throws IOException, GeneralSecurityException {
-        InputStream in = ForgotPassword.class.getResourceAsStream("/com/example/ticketchecker/credentials.json");
+
+    private static Credential authorize() throws IOException, GeneralSecurityException {
+        InputStream in = ForgotPassword.class.getResourceAsStream("/com/example/ticketchecker/clientSecretsGmail.json");
         if(in == null){
-            throw new FileNotFoundException("Resource not found: " + "/credentials.json");
+            throw new FileNotFoundException("Resource not found");
         }
         GoogleClientSecrets client = GoogleClientSecrets.load(
                 JSON_FACTORY, new InputStreamReader(in)
@@ -65,7 +80,7 @@ public class ForgotPassword {
         GoogleAuthorizationCodeFlow gacf = new GoogleAuthorizationCodeFlow.Builder(
                 GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY,
                 client, SCOPES)
-                .setDataStoreFactory(new FileDataStoreFactory(Paths.get("tokens").toFile()))
+                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File("tokens")))
                 .setAccessType("offline")
                 .build();
 
@@ -75,27 +90,35 @@ public class ForgotPassword {
                 gacf, receiver).authorize("user");
 
     }
-    private void draftEmail(){
 
-    }
-
-    private static void sendEmail(String firstName, String userName, String newPassword) throws GeneralSecurityException, IOException {
-        String message = "";
-
+    private static void sendEmail(String firstName, String userName, String newPassword, String toEmailAddress) throws GeneralSecurityException, IOException, MessagingException {
         NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, authorize(HTTP_TRANSPORT))
+        Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, authorize())
                 .setApplicationName("Testing Sending Mail")
                 .build();
 
-        String messageSubject = "Test message";
-        String bodyText = "lorem ipsum.";
+        String messageSubject = "New Password";
+        String bodyText = String.format("""
+                                 Hello '%s',
+                                 
+                                 Please keep your login credentials secure and do not share them with anyone.
+                                 This username and password will remain the same for the entirety of your account, it is not temporary.
+                                 If you have any questions or need further assistance, please contact Rishi.
+                                 
+                                 Your new username is: '%s'
+                                 Your new password is: '%s'
+                      
+                                 Thank you,
+                                 TicketChecker Team
+                                 
+                                """, firstName, userName, newPassword);
 
         // Encode as MIME message
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
         MimeMessage email = new MimeMessage(session);
-        email.setFrom(new InternetAddress(fromEmailAddress));
-        email.addRecipient(javax.mail.Message.RecipientType.TO,
+        email.setFrom(new InternetAddress(senderEmailAddress));
+        email.addRecipient(jakarta.mail.Message.RecipientType.TO,
                 new InternetAddress(toEmailAddress));
         email.setSubject(messageSubject);
         email.setText(bodyText);
@@ -113,7 +136,6 @@ public class ForgotPassword {
             message = service.users().messages().send("me", message).execute();
             System.out.println("Message id: " + message.getId());
             System.out.println(message.toPrettyString());
-            return message;
         } catch (GoogleJsonResponseException e) {
             // TODO(developer) - handle error appropriately
             GoogleJsonError error = e.getDetails();
@@ -123,8 +145,11 @@ public class ForgotPassword {
                 throw e;
             }
         }
-        return null;
+
     }
+    public static void main(String[] args){
+        ForgotPassword newy = new ForgotPassword();
+        newy.passwordGenerator("sarraff2004", "Rishi", "Sarraff", "vedhavias123@gmail.com");
     }
 
 }

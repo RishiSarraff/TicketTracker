@@ -14,6 +14,8 @@ module com.example.ticketchecker {
     requires com.google.gson;
     requires jdk.httpserver;
     requires com.google.api.services.gmail;
+    requires org.apache.commons.codec;
+    requires jakarta.mail;
 
 
     opens com.example.ticketchecker to javafx.fxml;

@@ -112,7 +112,7 @@ public class SheetDetailsValidator {
         }
     }
 
-    public static void main(String[] args) throws GeneralSecurityException, IOException {
-        SheetDetailsValidator.sendToSheetsInterpreter("testingData", "1gibwcsnJv55InYKDnXhGxftsIOUVjeSDX2X0oPqUb_M", "testingData", "B2:I334");
-    }
+//    public static void main(String[] args) throws GeneralSecurityException, IOException {
+//        SheetDetailsValidator.sendToSheetsInterpreter("testingData", "1gibwcsnJv55InYKDnXhGxftsIOUVjeSDX2X0oPqUb_M", "testingData", "B2:I334");
+//    }
 }
