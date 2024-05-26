@@ -6,17 +6,18 @@ import com.example.ticketchecker.model.sheets.SheetsInterpreter;
 import com.example.ticketchecker.model.smallFeatures.CloseProgram;
 import com.example.ticketchecker.model.smallFeatures.DialogUtils;
 import com.example.ticketchecker.model.smallFeatures.SceneSwitch;
-import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.model.Sheet;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -151,8 +152,6 @@ public class UploadSheetController implements SceneController{
                     si.setCellRange(cellRange);
                     si.setSheetID(spreadsheetID);
                     si.setSheetName(sheetName);
-                    // all inputs are valid, so we pass them into the sheets interpreter which returns
-                    // interprets them properly and returns a error pop up through sheets interpreter if not allowdd,
                     List<TicketSubmission> fetchedDataRows = SheetDetailsValidator.sendToSheetsInterpreter(fileName, spreadsheetID, sheetName, cellRange);
                     ObservableList<TicketSubmission> obsList = FXCollections.observableList(fetchedDataRows);
                     createHBoxes(obsList);
@@ -171,8 +170,16 @@ public class UploadSheetController implements SceneController{
             Label currLabel = new Label();
             HBox ticketBox = new HBox();
             labelSetter(currLabel, tick);
+            currLabel.setPadding(new Insets(5, 0, 5, 20));
+            ticketBox.setStyle("-fx-background-color: #c7e8fb; -fx-background-radius: 30");
+            ticketBox.setPadding(new Insets(20, 0, 20, 20));
+
+
 
             ComboBox<String> dropdown = new ComboBox<>();
+            dropdown.setStyle("-fx-background-color: white; -fx-background-radius: 30");
+            dropdown.getEditor().setFont(Font.font("Phosphate", 18));
+
             dropdown.getItems().addAll("Paid", "Email Sent", "Reset");
             dropdown.setOnAction( e -> {
                     String typeOfHighlight = dropdown.getValue();
@@ -188,33 +195,35 @@ public class UploadSheetController implements SceneController{
     private void labelSetter(Label currLabel, TicketSubmission tick) {
         StringBuilder str = new StringBuilder();
         if(tick.getEmailAddress()!=null) {
-            str.append("Email " + tick.getEmailAddress() + "\t" + "\t");
+            str.append("Email " + tick.getEmailAddress() + "\n");
         }
 
         if(tick.getFirstName()!=null && tick.getLastName() == null) {
-            str.append("Name: " + tick.getFirstName() + "\t" + "\t");
+            str.append("Name: " + tick.getFirstName() + "\n");
         }
         else if(tick.getFirstName()==null && tick.getLastName() != null) {
-            str.append("Name: " + tick.getLastName() + "\t" + "\t");
+            str.append("Name: " + tick.getLastName() +"\n");
         }
         else if(tick.getFirstName()!=null && tick.getLastName() != null) {
-            str.append("Name: " + tick.getFirstName() + " " + tick.getLastName()+ "\t"+"\t" );
+            str.append("Name: " + tick.getFirstName() + " " + tick.getLastName()+ "\n" );
         }
 
         if(tick.getYear() != 0){
-            str.append("Year: " + tick.getYear() + "\t"+"\t");
+            str.append("Year: " + tick.getYear() + "\n");
         }
         if(tick.getMemberStatus() != null){
-            str.append("Member Status: " + tick.getMemberStatus()+ "\t"+"\t");
+            str.append("Member Status: " + tick.getMemberStatus()+ "\n");
         }
         if(tick.getPaymentOption() != null){
-            str.append("Payment Option: " + tick.getPaymentOption()+"\t"+"\t");
+            str.append("Payment Option: " + tick.getPaymentOption()+"\n");
         }
         if(tick.getPhoneNumber() != 0){
             str.append("Phone Number: " + tick.getPhoneNumber());
         }
 
         currLabel.setText(str.toString());
+        currLabel.setTextFill(Paint.valueOf("#6082B6"));
+        currLabel.setFont(Font.font("Phosphate", 14));
     }
 
     private void handleColorChange(String typeOfHighlight, TicketSubmission tick) {

@@ -14,15 +14,17 @@ public class User {
     private String username;
 
     private String lastName;
+    private String email;
 
     private Stage currStage;
 
     static DatabaseDriver db = DatabaseDriver.getInstance("TickCheckDB");
 
     public User(){}
-    public User(String firstName, String lastName){
+    public User(String firstName, String lastName, String email){
         setFirstName(firstName);
         setLastName(lastName);
+        setEmail(email);
     }
 
     public User getUserInstance(){
@@ -32,10 +34,11 @@ public class User {
         return instance;
     }
 
-    public void setUserDetails(String username, String firstName, String lastName) {
+    public void setUserDetails(String username, String firstName, String lastName, String email) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
     }
 
     public String getFirstName() {
@@ -60,6 +63,14 @@ public class User {
 
     public void setCurrStage(Stage currStage){
         this.currStage = currStage;
+    }
+
+    public String getEmail(){
+        return this.email;
+    }
+
+    public void setEmail(String email){
+        this.email = email;
     }
 
     public String getUserAccess(){

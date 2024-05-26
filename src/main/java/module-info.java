@@ -13,7 +13,7 @@ module com.example.ticketchecker {
     requires org.json;
     requires com.google.gson;
     requires jdk.httpserver;
-
+    requires com.google.api.services.gmail;
 
 
     opens com.example.ticketchecker to javafx.fxml;

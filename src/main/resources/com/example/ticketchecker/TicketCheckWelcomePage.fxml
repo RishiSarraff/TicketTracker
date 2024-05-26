@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -51,7 +52,7 @@
                         <Font name="Phosphate Inline" size="14.0" />
                      </font>
                      <StackPane.margin>
-                        <Insets top="225.0" />
+                        <Insets top="250.0" />
                      </StackPane.margin>
                   </Button>
                   <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBackToUserType" style="-fx-background-color: white;" text=" Go Back" textFill="#6082b6">
@@ -62,6 +63,14 @@
                         <Insets bottom="325.0" right="325.0" />
                      </StackPane.margin>
                   </Button>
+                  <Hyperlink fx:id="forgotPasswordLink" onAction="#sendVerificationEmail" text="Forgot Password?" textFill="#6082b6">
+                     <StackPane.margin>
+                        <Insets top="180.0" />
+                     </StackPane.margin>
+                     <font>
+                        <Font name="Phosphate Inline" size="14.0" />
+                     </font>
+                  </Hyperlink>
                </children>
                <opaqueInsets>
                   <Insets />

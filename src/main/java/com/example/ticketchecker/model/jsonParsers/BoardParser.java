@@ -31,7 +31,7 @@ public class BoardParser {
 
             db.createBoardTable();
             db.insertIntoBoardTable(boardList);
-
+//
 //            db.clearTable("Board");
 //            db.clearTable("Users");
 
@@ -55,13 +55,31 @@ public class BoardParser {
                 String memberPosition = eachMember.getString("chairPosition");
                 String memberFirstName = eachMember.getString("firstName");
                 String memberLastName = eachMember.getString("lastName");
-                Member currMember = new Member(memberAccess, memberPosition, memberFirstName, memberLastName);
+                String memberEmailAddress = eachMember.getString("personalEmail");
+                Member currMember = new Member(memberAccess, memberPosition, memberFirstName, memberLastName, memberEmailAddress);
 
                 memberList.add(currMember);
             }
         }
 
         return memberList;
+    }
+
+    public static String emailRetriever(String fName, String lName){
+        try{
+            if(!db.isConnected){
+                db.connect();
+            }
+            String email = db.getEmailAddress(fName, lName);
+            if(email != null){
+                return email;
+            }
+            return "";
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

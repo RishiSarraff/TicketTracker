@@ -112,6 +112,7 @@ public class  DatabaseDriver {
             String createBoardString = "CREATE TABLE IF NOT EXISTS Board(" +
                     "MemberID INTEGER PRIMARY KEY NOT NULL," +
                     "UserID INTEGER," +
+                    "Email TEXT NOT NULL, " +
                     "PermissionLevel TEXT NOT NULL, " +
                     "ChairPosition TEXT NOT NULL," +
                     "FirstName TEXT NOT NULL," +
@@ -133,13 +134,14 @@ public class  DatabaseDriver {
                 Member currMember = boardList.get(i);
                 String memberPermissionLevel = currMember.getPermissionLevel();
                 String memberPosition = currMember.getBoardPosition();
+                String emailAddress = currMember.getEmailAddress();
                 String firstName = capitalizeFirstLetter(currMember.getFirstName());
                 String lastName = capitalizeFirstLetter(currMember.getLastName());
 
                 String boardInfo = String.format("""
-                                                INSERT INTO Board(PermissionLevel, ChairPosition, FirstName, LastName)
-                                                values ('%s', '%s', '%s', '%s');
-                                                """, memberPermissionLevel, memberPosition, firstName, lastName);
+                                                INSERT INTO Board(Email, PermissionLevel, ChairPosition, FirstName, LastName)
+                                                values ('%s', '%s', '%s', '%s', '%s');
+                                                """, emailAddress, memberPermissionLevel, memberPosition, firstName, lastName);
 
                 Statement statement = connection.createStatement();
                 statement.executeUpdate(boardInfo);
@@ -237,50 +239,46 @@ public class  DatabaseDriver {
         }
     }
 
-    public void createTicketTable() throws SQLException {
+
+    public String getEmailAddress(String fName, String lName) throws SQLException {
         try{
-            String ticketTableDb = "CREATE TABLE IF NOT EXISTS Tickets(" +
-                    "PhoneNumber LONG PRIMARY KEY," +
-                    "Email TEXT NOT NULL," +
-                    "FirstName TEXT NOT NULL, " +
-                    "LastName TEXT NOT NULL, " +
-                    "Year INTEGER NOT NULL, " +
-                    "MemberStatus TEXT NOT NULL, " +
-                    "PaymentOption TEXT NOT NULL" +
-                    ")";
+            String firstName = fName.toLowerCase();
+            String lastName = lName.toLowerCase();
+            String emailGetter = String.format("""
+                                                SELECT Email FROM Board WHERE LOWER(FirstName) = '%s' AND LOWER(LastName) = '%s'
+                                                """, firstName, lastName);
 
             Statement statement = connection.createStatement();
-            statement.executeUpdate(ticketTableDb);
+            ResultSet rs = statement.executeQuery(emailGetter);
+
+            return rs.getString("Email");
+
         }
         catch(SQLException e){
-            rollback();
+            throw e;
+        }
+
+    }
+
+    public String getChairPosition(String firstName, String lastName) throws SQLException {
+        try{
+            String fName = firstName.toLowerCase();
+            String lName = lastName .toLowerCase();
+            String pLevel = String.format("""
+                                          SELECT ChairPosition FROM Board WHERE LOWER(FirstName) = '%s' AND LOWER(LastName) = '%s'
+                                          """, fName, lName);
+
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(pLevel);
+
+            String answer = rs.getString("ChairPosition");
+            return answer;
+
+        }
+        catch(SQLException e){
             throw e;
         }
     }
 
-    public void insertIntoTable(List<TicketSubmission> finalList) throws SQLException {
-        try {
-            for (TicketSubmission tick : finalList) {
-                String email = tick.getEmailAddress();
-                String fName = tick.getFirstName();
-                String lName = tick.getLastName();
-                int year = tick.getYear();
-                String status = tick.getMemberStatus();
-                String payment = tick.getPaymentOption();
-                long number = tick.getPhoneNumber();
 
-                String insertString = String.format("""
-                    INSERT into Tickets(PhoneNumber, Email, FirstName, LastName, Year, MemberStatus, PaymentOption)
-                     values (%d, '%s', '%s', '%s', %d, '%s', '%s');
-                     """, number, email, fName, lName, year, status, payment);
-
-                var statement = connection.createStatement();
-                statement.executeUpdate(insertString);
-            }
-        }
-        catch(SQLException e){
-            rollback();
-            throw e;
-        }
-    }
 }
