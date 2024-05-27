@@ -17,7 +17,6 @@ module com.example.ticketchecker {
     requires org.apache.commons.codec;
     requires jakarta.mail;
 
-
     opens com.example.ticketchecker to javafx.fxml;
     exports com.example.ticketchecker;
     exports com.example.ticketchecker.controllers;

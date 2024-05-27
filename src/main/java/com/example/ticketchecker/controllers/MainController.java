@@ -76,6 +76,7 @@ public class MainController implements SceneController {
 
         @FXML
         private Button backButton;
+
         @FXML
         private Hyperlink forgotPasswordLink;
 

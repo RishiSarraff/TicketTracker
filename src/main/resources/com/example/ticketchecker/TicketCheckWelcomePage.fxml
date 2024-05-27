@@ -26,7 +26,7 @@
                         <Insets bottom="150.0" />
                      </StackPane.margin>
                   </TextField>
-                  <Label text="Password:" textFill="#6082b6">
+                  <Label alignment="CENTER_RIGHT" text="Password:" textFill="#6082b6">
                      <font>
                         <Font name="Phosphate Inline" size="24.0" />
                      </font>
