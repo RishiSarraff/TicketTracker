@@ -2,6 +2,7 @@ package com.example.ticketchecker.model;
 
 import com.example.ticketchecker.database.DatabaseDriver;
 
+import com.example.ticketchecker.model.smallFeatures.DialogUtils;
 import com.google.api.services.gmail.model.Message;
 import java.util.Properties;
 
@@ -15,7 +16,7 @@ import jakarta.mail.internet.MimeMessage;
 import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import jakarta.mail.MessagingException;
-
+import javafx.stage.Stage;
 
 
 import java.io.IOException;
@@ -39,11 +40,31 @@ public class ForgotPassword {
 
             String newPassword = chairPosition+"2425";
 
-            sendEmail(firstName, userName, newPassword, email);
+            if(updatePassword(newPassword)){
+                sendEmail(firstName, userName, newPassword, email);
+            }
 
         } catch (SQLException | GeneralSecurityException | IOException | MessagingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static boolean updatePassword(String newPassword) {
+        // update password here, if the password matches the same as newPassword then do not update and tell them to check their own email
+        // if the password doesnt match then update.
+        try{
+            if(!db.isConnected){
+                db.connect();
+            }
+
+            //db.getPassword();
+            return true;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     private static void sendEmail(String firstName, String userName, String newPassword, String toEmailAddress) throws GeneralSecurityException, IOException, MessagingException {
@@ -92,4 +113,40 @@ public class ForgotPassword {
         return prop;
     }
 
+    public static boolean manageForgotPasswordInteraction(String fName, String lName, Stage currStage) {
+        try{
+            if(!db.isConnected){
+                db.connect();
+            }
+
+            if(db.checkUserID(fName, lName)){
+                DialogUtils.dialogPopUp("You cannot access forgot password without creating an account first", "Please create an account", currStage);
+                return false;
+            }
+            return true;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String getUsername(String userFirstName, String userLastName) {
+        try{
+            if(!db.isConnected){
+                db.connect();
+            }
+
+            if(!db.checkUserID(userFirstName, userLastName)){
+                int userID = db.getUserID(userFirstName, userLastName);
+                return db.getUsername(userID);
+            }
+
+            return null;
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    // we have to set this as theyre new password and keep username the same.
 }

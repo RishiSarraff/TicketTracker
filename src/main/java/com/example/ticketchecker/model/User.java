@@ -34,13 +34,6 @@ public class User {
         return instance;
     }
 
-    public void setUserDetails(String username, String firstName, String lastName, String email) {
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -52,6 +45,8 @@ public class User {
     public String getUsername() {
         return username;
     }
+
+    public void setUsername(String username){ this.username = username;}
 
     public String getLastName() {
         return lastName;

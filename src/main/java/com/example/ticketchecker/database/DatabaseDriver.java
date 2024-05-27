@@ -215,7 +215,7 @@ public class  DatabaseDriver {
         }
     }
 
-    public boolean getUserID(String fName, String lName) throws SQLException {
+    public boolean checkUserID(String fName, String lName) throws SQLException {
         try{
             String firstName = fName.toLowerCase();
             String lastName = lName.toLowerCase();
@@ -233,6 +233,27 @@ public class  DatabaseDriver {
                 } else {
                     return false;
                 }
+        }
+        catch(SQLException e){
+            throw e;
+        }
+    }
+
+    public Integer getUserID(String fName, String lName) throws SQLException {
+        try{
+            String firstName = fName.toLowerCase();
+            String lastName = lName.toLowerCase();
+
+            String getID = String.format("""
+                                          SELECT UserID FROM Board WHERE LOWER(FirstName) = '%s' AND LOWER(LastName) = '%s'
+                                          """, firstName, lastName);
+
+            Statement statement = connection.createStatement();
+            ResultSet answer = statement.executeQuery(getID);
+
+            int userID = answer.getInt("UserID");
+            System.out.println(userID);
+            return userID;
         }
         catch(SQLException e){
             throw e;
@@ -271,8 +292,7 @@ public class  DatabaseDriver {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(pLevel);
 
-            String answer = rs.getString("ChairPosition");
-            return answer;
+            return rs.getString("ChairPosition");
 
         }
         catch(SQLException e){
@@ -280,5 +300,19 @@ public class  DatabaseDriver {
         }
     }
 
+    public String getUsername(int userID) throws SQLException {
+        try{
+            String getID = String.format("""
+                                          SELECT Username FROM Users WHERE UserID = %d
+                                          """, userID);
 
+            Statement statement = connection.createStatement();
+            ResultSet answer = statement.executeQuery(getID);
+
+            return answer.getString("Username");
+        }
+        catch(SQLException e){
+            throw e;
+        }
+    }
 }

@@ -24,7 +24,7 @@ public class LogInValidator {
             }
 
             if(!db.findUser(username, password)){
-                if(newOrOldUser == 0 && db.getUserID(fName, lName)) {
+                if(newOrOldUser == 0 && db.checkUserID(fName, lName)) {
                         db.insertUser(username, password);
                         db.setBoardID(username, password, fName, lName);
                         db.commit();

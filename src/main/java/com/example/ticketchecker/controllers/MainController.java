@@ -139,7 +139,11 @@ public class MainController implements SceneController {
                         if(LogInValidator.validateUser(newOrOld, username, password, currStage, currUser.getFirstName(), currUser.getLastName())){
                                 String userEmail = BoardParser.emailRetriever(userFirstName, userLastName);
                                 userEmail = userEmail.trim();
-                                currUser.getUserInstance().setUserDetails(username, userFirstName, userLastName, userEmail);
+                                User currentUser = currUser.getUserInstance();
+                                currentUser.setFirstName(userFirstName);
+                                currentUser.setLastName(userLastName);
+                                currentUser.setEmail(userEmail);
+                                currentUser.setUsername(username);
                                 if(newOrOld == 0){
                                         userIdentityPane.setVisible(true);
                                         validPane.setVisible(false);
@@ -167,8 +171,15 @@ public class MainController implements SceneController {
                         String userEmail = BoardParser.emailRetriever(userFirstName, userLastName);
                         userEmail = userEmail.trim();
 
+                        String username = ForgotPassword.getUsername(userFirstName, userLastName);
+
                         currUser = new User(userFirstName, userLastName, userEmail);
-                        currUser.setUserDetails(usernameField.getText(), userFirstName, userLastName, userEmail);
+                        currUser.setUsername(username);
+
+                        currUser.setFirstName(userFirstName);
+                        currUser.setLastName(userLastName);
+                        currUser.setEmail(userEmail);
+
                         currUser.setCurrStage(currStage);
 
                         userFirstNameField.clear();
@@ -182,10 +193,11 @@ public class MainController implements SceneController {
         void typeOfUser(ActionEvent event){
                 if(event.getSource() == newUserButton) {
                         newOrOld = 0;
+                        forgotPasswordLink.setVisible(false);
                 }
                 else if(event.getSource() == oldUserButton){
                         newOrOld = 1;
-
+                        forgotPasswordLink.setVisible(true);
                 }
                 userIdentityPane.setVisible(false);
                 validPane.setVisible(true);
@@ -210,7 +222,9 @@ public class MainController implements SceneController {
         @FXML
         void sendVerificationEmail(ActionEvent event){
                 if(event.getSource() == forgotPasswordLink){
-                        ForgotPassword.passwordGenerator(currUser.getUsername(), currUser.getFirstName(), currUser.getLastName(), currUser.getEmail());
+                        if(ForgotPassword.manageForgotPasswordInteraction(currUser.getFirstName(), currUser.getLastName(), currStage)) {
+                                ForgotPassword.passwordGenerator(currUser.getUsername(), currUser.getFirstName(), currUser.getLastName(), currUser.getEmail());
+                        }
                 }
         }
 
