@@ -315,4 +315,34 @@ public class  DatabaseDriver {
             throw e;
         }
     }
+
+    public String getPassword(int userID) throws SQLException{
+        try{
+            String getID = String.format("""
+                                          SELECT Password FROM Users WHERE UserID = %d
+                                          """, userID);
+
+            Statement statement = connection.createStatement();
+            ResultSet answer = statement.executeQuery(getID);
+
+            return answer.getString("Password");
+        }
+        catch(SQLException e){
+            throw e;
+        }
+    }
+
+    public void updatePassword(int userID, String newPassword) throws SQLException {
+        try{
+            String updatePass = String.format("""
+                                          UPDATE Users SET Password = '%s' WHERE UserID = %d
+                                          """, newPassword, userID);
+
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(updatePass);
+        }
+        catch(SQLException e){
+            throw e;
+        }
+    }
 }

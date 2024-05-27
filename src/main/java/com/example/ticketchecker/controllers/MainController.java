@@ -86,11 +86,7 @@ public class MainController implements SceneController {
 
         private MainController mc;
 
-
-
-
         public static User currUser;
-
 
         public void setCurrentStage(Stage stage){
                 currStage = stage;
@@ -223,7 +219,7 @@ public class MainController implements SceneController {
         void sendVerificationEmail(ActionEvent event){
                 if(event.getSource() == forgotPasswordLink){
                         if(ForgotPassword.manageForgotPasswordInteraction(currUser.getFirstName(), currUser.getLastName(), currStage)) {
-                                ForgotPassword.passwordGenerator(currUser.getUsername(), currUser.getFirstName(), currUser.getLastName(), currUser.getEmail());
+                                ForgotPassword.passwordGenerator(currUser.getUsername(), currUser.getFirstName(), currUser.getLastName(), currUser.getEmail(), currStage);
                         }
                 }
         }

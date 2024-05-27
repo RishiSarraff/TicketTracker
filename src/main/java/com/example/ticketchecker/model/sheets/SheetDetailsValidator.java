@@ -83,7 +83,6 @@ public class SheetDetailsValidator {
     }
 
     public static List<TicketSubmission> sendToSheetsInterpreter(String fileName, String spreadsheetID, String sheetName, String cellRange) throws GeneralSecurityException, IOException {
-        // here is where we interpret the IOExceptions and errors happening when trying to process the sheets and get acces to them
         try {
             List<TicketSubmission> finalList = new ArrayList<>();
             SheetsInterpreter sheetsReader = new SheetsInterpreter(fileName, spreadsheetID, sheetName, cellRange);
@@ -103,7 +102,6 @@ public class SheetDetailsValidator {
                     finalList.add(rowObject);
                 }
             }
-            System.out.println(finalList);
             return finalList;
 
         } catch (IOException | GeneralSecurityException e) {

@@ -1,5 +1,6 @@
 package com.example.ticketchecker.model;
 
+import com.example.ticketchecker.controllers.MainController;
 import com.example.ticketchecker.database.DatabaseDriver;
 
 import com.example.ticketchecker.model.smallFeatures.DialogUtils;
@@ -29,8 +30,7 @@ public class ForgotPassword {
     private static final String EMAIL_FROM = "sarraff2004@gmail.com"; // change this depending on who wants to send the email
     private static final String APP_PASSWORD = "fhcs qwnh xomp rtgg";
 
-
-    public static void passwordGenerator(String userName, String firstName, String lastName, String email){
+    public static void passwordGenerator(String userName, String firstName, String lastName, String email, Stage currStage){
         try{
             if(!db.isConnected){
                 db.connect();
@@ -40,7 +40,7 @@ public class ForgotPassword {
 
             String newPassword = chairPosition+"2425";
 
-            if(updatePassword(newPassword)){
+            if(updatePassword(firstName, lastName, newPassword, currStage)){
                 sendEmail(firstName, userName, newPassword, email);
             }
 
@@ -49,26 +49,15 @@ public class ForgotPassword {
         }
     }
 
-    private static boolean updatePassword(String newPassword) {
-        // update password here, if the password matches the same as newPassword then do not update and tell them to check their own email
-        // if the password doesnt match then update.
-        try{
-            if(!db.isConnected){
-                db.connect();
-            }
 
-            //db.getPassword();
-            return true;
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
 
     private static void sendEmail(String firstName, String userName, String newPassword, String toEmailAddress) throws GeneralSecurityException, IOException, MessagingException {
         String messageSubject = "New Password";
+
+        String processedFirstName = firstName.toLowerCase();
+        if(processedFirstName != null){
+            processedFirstName = processedFirstName.substring(0,1).toUpperCase() + processedFirstName.substring(1);
+        }
         String bodyText = String.format("""
                                  Hello %s,
                                  
@@ -82,7 +71,7 @@ public class ForgotPassword {
                                  Thank you,
                                  TicketChecker Team
                                  
-                                """, firstName, userName, newPassword);
+                                """, processedFirstName, userName, newPassword);
 
 
         MimeMessage message = new MimeMessage(getEmailSession());
@@ -148,5 +137,36 @@ public class ForgotPassword {
             throw new RuntimeException(e);
         }
     }
-    // we have to set this as theyre new password and keep username the same.
+    private static boolean updatePassword(String fName, String lName, String newPassword, Stage currStage) {
+        // update password here, if the password matches the same as newPassword then do not update and tell them to check their own email
+        // if the password doesnt match then update.
+        try{
+            if(!db.isConnected){
+                db.connect();
+            }
+
+            if(!db.checkUserID(fName, lName)){
+                // we check the
+                int userID = db.getUserID(fName, lName);
+                String pword = db.getPassword(userID);
+                if(!pword.equals(newPassword)){
+                    db.updatePassword(userID, newPassword);
+                    db.commit();
+                    return true;
+                }
+                else{
+                    DialogUtils.dialogPopUp("Password information was already sent out", "Check email again", currStage);
+                    return false;
+                }
+            }
+
+            DialogUtils.dialogPopUp("Can't select button if account is not created", "Create account first", currStage);
+            return false;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
 }
