@@ -133,26 +133,26 @@
                   </TextField>
                </children>
             </StackPane>
-            <StackPane fx:id="spreadSheetPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="1200.0" style="-fx-background-color: #6082B6; -fx-background-radius: 30;">
+            <StackPane fx:id="spreadSheetPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="1200.0" style="-fx-background-color: #6082B6; -fx-background-radius: 30;">
                <children>
-                  <ListView fx:id="mainSheetsListView" prefHeight="200.0" prefWidth="200.0" style="-fx-background-radius: 30;">
+                  <ListView fx:id="mainSheetsListView" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="393.0" prefWidth="1082.0" style="-fx-background-radius: 30;">
                      <StackPane.margin>
-                        <Insets bottom="30.0" left="30.0" right="30.0" top="90.0" />
+                        <Insets bottom="65.0" left="30.0" right="30.0" top="90.0" />
                      </StackPane.margin>
                   </ListView>
                   <TextField fx:id="firstNameSearch" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" style="-fx-background-radius: 30;">
                      <StackPane.margin>
-                        <Insets bottom="440.0" right="500.0" />
+                        <Insets bottom="450.0" right="500.0" />
                      </StackPane.margin>
                   </TextField>
                   <TextField fx:id="lastNameSearch" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" style="-fx-background-radius: 30;">
                      <StackPane.margin>
-                        <Insets bottom="440.0" left="350.0" />
+                        <Insets bottom="450.0" left="350.0" />
                      </StackPane.margin>
                   </TextField>
                   <Button fx:id="getPeopleButton" mnemonicParsing="false" onAction="#filterListViewSettings" style="-fx-background-color: white; -fx-background-radius: 30;" text="Search" textFill="#6082b6">
                      <StackPane.margin>
-                        <Insets bottom="440.0" left="950.0" />
+                        <Insets bottom="450.0" left="950.0" />
                      </StackPane.margin>
                      <font>
                         <Font name="Phosphate Inline" size="24.0" />
@@ -163,7 +163,7 @@
                         <Font name="Phosphate Inline" size="24.0" />
                      </font>
                      <StackPane.margin>
-                        <Insets bottom="440.0" right="850.0" />
+                        <Insets bottom="450.0" right="850.0" />
                      </StackPane.margin>
                   </Label>
                   <Label text="Last Name:" textFill="WHITE">
@@ -171,9 +171,17 @@
                         <Font name="Phosphate Inline" size="24.0" />
                      </font>
                      <StackPane.margin>
-                        <Insets bottom="440.0" />
+                        <Insets bottom="450.0" />
                      </StackPane.margin>
                   </Label>
+                  <Button fx:id="submitChangesButton" mnemonicParsing="false" onAction="#sendOverChanges" style="-fx-background-color: white; -fx-background-radius: 30;" text="Submit" textFill="#6082b6">
+                     <font>
+                        <Font name="Phosphate Inline" size="24.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets top="485.0" />
+                     </StackPane.margin>
+                  </Button>
                </children></StackPane>
          </children>
       </StackPane>

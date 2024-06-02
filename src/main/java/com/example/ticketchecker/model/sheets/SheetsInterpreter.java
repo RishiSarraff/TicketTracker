@@ -22,8 +22,6 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
-import com.google.api.services.sheets.v4.model.ValueRange;
-import com.google.gson.Gson;
 
 
 public class SheetsInterpreter {
@@ -41,16 +39,19 @@ public class SheetsInterpreter {
 
     private static String cellRange = "";
 
+    private static int sheetId = 0;
+
     public SheetsInterpreter(){ // default this to the demo doc with default values.
         setApplicationName("");
-        setSheetID("");
+        setSpreadSheetID("");
         setSheetName("");
         setCellRange("");
+        setSheetID(0);
     }
 
     public SheetsInterpreter(String applicationName, String sheetID, String sheetName, String cellRange){
         setApplicationName(applicationName);
-        setSheetID(sheetID);
+        setSpreadSheetID(sheetID);
         setSheetName(sheetName);
         setCellRange(cellRange);
     }
@@ -63,11 +64,11 @@ public class SheetsInterpreter {
         APPLICATION_NAME = applicationName;
     }
 
-    public static String getSheetID() {
+    public static String getSpreadSheetID() {
         return SPREADSHEET_ID;
     }
 
-    public static void setSheetID(String spreadsheetId) {
+    public static void setSpreadSheetID(String spreadsheetId) {
         SPREADSHEET_ID = spreadsheetId;
     }
 
@@ -89,6 +90,13 @@ public class SheetsInterpreter {
         if(SheetDetailsValidator.cellRangeValidator(cellRange)){
             this.cellRange = cellRange;
         }
+    }
+
+    public static int getSheetID(){
+        return sheetId;
+    }
+    public void setSheetID(int Id){
+        this.sheetId = Id;
     }
 
 
@@ -114,7 +122,7 @@ public class SheetsInterpreter {
 
     }
 
-    static Sheets getService() throws IOException, GeneralSecurityException{
+    public static Sheets getService() throws IOException, GeneralSecurityException{
         Credential creds = authorize();
         return new Sheets.Builder(GoogleNetHttpTransport.newTrustedTransport(),
                 GsonFactory.getDefaultInstance(), creds)

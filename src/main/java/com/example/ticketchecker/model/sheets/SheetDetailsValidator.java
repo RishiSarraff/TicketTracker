@@ -85,10 +85,14 @@ public class SheetDetailsValidator {
     public static List<TicketSubmission> sendToSheetsInterpreter(String fileName, String spreadsheetID, String sheetName, String cellRange) throws GeneralSecurityException, IOException {
         try {
             List<TicketSubmission> finalList = new ArrayList<>();
-            SheetsInterpreter sheetsReader = new SheetsInterpreter(fileName, spreadsheetID, sheetName, cellRange);
-            Sheets service = sheetsReader.getService();
+            Sheets service = SheetsInterpreter.getService();
+            int indexOfColon = cellRange.indexOf(':');
+            int startcellRange = Integer.parseInt(cellRange.substring(1, indexOfColon));
+            int endCellRange = Integer.parseInt(cellRange.substring(indexOfColon+2));
+            int rowNumber = startcellRange;
 
-            String fetchVals = sheetsReader.getSheetName() + "!" + sheetsReader.getCellRange();
+
+            String fetchVals = SheetsInterpreter.getSheetName() + "!" + SheetsInterpreter.getCellRange();
 
             ValueRange response = service.spreadsheets().values().get(spreadsheetID, fetchVals).execute();
 
@@ -98,8 +102,10 @@ public class SheetDetailsValidator {
                 System.out.println("No data found.");
             } else {
                 for (List<Object> row : values) {
-                    TicketSubmission rowObject = TicketProcessor.rowProcessor(row);
+                    System.out.println(rowNumber); // we should pass in the row index of each as a elementof that objct
+                    TicketSubmission rowObject = TicketProcessor.rowProcessor(row, rowNumber);
                     finalList.add(rowObject);
+                    rowNumber++;
                 }
             }
             return finalList;

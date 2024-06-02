@@ -7,7 +7,7 @@ public class TicketProcessor {
 
     static DatabaseDriver db = DatabaseDriver.getInstance("TickCheckDB");
 
-    public static TicketSubmission rowProcessor(List<Object> row) {
+    public static TicketSubmission rowProcessor(List<Object> row, int rowNumber) {
         TicketSubmission newTicket = new TicketSubmission();
         int lengthRow = row.size();
 
@@ -39,6 +39,8 @@ public class TicketProcessor {
             String phoneNumber = (String) row.get(6);
             newTicket.setPhoneNumber(processPhoneNumber(phoneNumber));
         }
+
+        newTicket.setRowNumber(rowNumber);
 
         return newTicket;
     }

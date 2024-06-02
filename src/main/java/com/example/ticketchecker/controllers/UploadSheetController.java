@@ -1,12 +1,15 @@
 package com.example.ticketchecker.controllers;
 
 import com.example.ticketchecker.model.TicketSubmission;
+import com.example.ticketchecker.model.jsonPayloads;
 import com.example.ticketchecker.model.sheets.SheetDetailsValidator;
 import com.example.ticketchecker.model.sheets.SheetsInterpreter;
 import com.example.ticketchecker.model.smallFeatures.CloseProgram;
 import com.example.ticketchecker.model.smallFeatures.DialogUtils;
 import com.example.ticketchecker.model.smallFeatures.SceneSwitch;
 
+import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest;
+import com.google.api.services.sheets.v4.model.Request;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -77,6 +80,8 @@ public class UploadSheetController implements SceneController{
 
     @FXML
     private Button submitButton;
+    @FXML
+    private Button submitChangesButton;
 
     @FXML
     private Button goBackButton;
@@ -125,6 +130,7 @@ public class UploadSheetController implements SceneController{
             String sheetName = sheetNameTextField.getText();
             String cellRange = cellRangeTextField.getText();
             String spreadsheetID = SheetDetailsValidator.spreadsheetIDGetter(url);
+            String sheetID = url.substring(url.indexOf("gid=")+4);
 
 
             if(url == null || url.isEmpty()){
@@ -150,8 +156,9 @@ public class UploadSheetController implements SceneController{
                     si = new SheetsInterpreter();
                     si.setApplicationName(fileName);
                     si.setCellRange(cellRange);
-                    si.setSheetID(spreadsheetID);
+                    si.setSpreadSheetID(spreadsheetID);
                     si.setSheetName(sheetName);
+                    si.setSheetID(Integer.parseInt(sheetID));
                     List<TicketSubmission> fetchedDataRows = SheetDetailsValidator.sendToSheetsInterpreter(fileName, spreadsheetID, sheetName, cellRange);
                     ObservableList<TicketSubmission> obsList = FXCollections.observableList(fetchedDataRows);
                     createHBoxes(obsList);
@@ -184,7 +191,13 @@ public class UploadSheetController implements SceneController{
             dropdown.setOnAction( e -> {
                     String typeOfHighlight = dropdown.getValue();
 
+                try {
                     handleColorChange(typeOfHighlight, tick);
+                } catch (GeneralSecurityException ex) {
+                    throw new RuntimeException(ex);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             });
 
             ticketBox.getChildren().addAll(dropdown, currLabel);
@@ -226,7 +239,32 @@ public class UploadSheetController implements SceneController{
         currLabel.setFont(Font.font("Phosphate", 14));
     }
 
-    private void handleColorChange(String typeOfHighlight, TicketSubmission tick) {
+    private void handleColorChange(String typeOfHighlight, TicketSubmission tick) throws GeneralSecurityException, IOException {
+        //getthe row number of the ticketsubmisison option being selected.
+        int rowNum = tick.getRowNumber();
+        String spreadsheetId = si.getSpreadSheetID();
+        int sheetID = si.getSheetID();
+        List<Request> reqs = new ArrayList<>();
+        if(typeOfHighlight.equals("Paid")){
+            reqs.add(jsonPayloads.createPaidJson(rowNum, sheetID));
+        }
+
+        else if(typeOfHighlight.equals("Email Sent")){
+            reqs.add(jsonPayloads.createEmailSentJson(rowNum, sheetID));
+        }
+
+        else if(typeOfHighlight.equals("Reset")){
+            reqs.add(jsonPayloads.createResetJson(rowNum, sheetID));
+        }
+
+        BatchUpdateSpreadsheetRequest batchRequest = new BatchUpdateSpreadsheetRequest().setRequests(reqs);
+
+        si.getService().spreadsheets().batchUpdate(spreadsheetId, batchRequest).execute();
+    }
+
+    @FXML
+    private void sendOverChanges(){
+        //
     }
 
     @FXML
@@ -236,7 +274,7 @@ public class UploadSheetController implements SceneController{
             String fName = firstNameSearch.getText();
             String lName = lastNameSearch.getText();
 
-            List<TicketSubmission> fetchedData = SheetDetailsValidator.sendToSheetsInterpreter(si.getApplicationName(), si.getSheetID(), si.getSheetName(), si.getCellRange());
+            List<TicketSubmission> fetchedData = SheetDetailsValidator.sendToSheetsInterpreter(si.getApplicationName(), si.getSpreadSheetID(), si.getSheetName(), si.getCellRange());
             List<TicketSubmission> filteredData = new ArrayList<>();
 
             for (TicketSubmission tick : fetchedData) {
@@ -270,6 +308,9 @@ public class UploadSheetController implements SceneController{
             ObservableList<TicketSubmission> obsList = FXCollections.observableList(filteredData);
             createHBoxes(obsList);
         }
-
     }
+
+
+
+
 }

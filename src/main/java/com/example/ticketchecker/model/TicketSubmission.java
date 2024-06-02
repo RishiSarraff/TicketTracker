@@ -12,6 +12,8 @@ public class TicketSubmission {
 
     private String memberStatus;
 
+    private int rowNumber;
+
     private String paymentOption;
 
     private long phoneNumber;
@@ -82,6 +84,13 @@ public class TicketSubmission {
 
     public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public int getRowNumber(){
+        return rowNumber;
+    }
+    public void setRowNumber(int rowNum){
+        this.rowNumber = rowNum;
     }
 
     @Override
