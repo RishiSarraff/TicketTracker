@@ -4,7 +4,7 @@ When there is a 400:Bad Request OAuthClientID issue, this means that the JavaFX 
 
       1. Go to the "tokens" folder
       2. Open the folder
-      3. Delete the "Stored Credentials" file
+      3. Delete the "StoredCredential" file
       4. Now when you run again it should redirect you to verify/confirm
       5. Press continue, and viola
 	
