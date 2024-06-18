@@ -130,7 +130,7 @@ public class UploadSheetController implements SceneController{
             String sheetName = sheetNameTextField.getText();
             String cellRange = cellRangeTextField.getText();
             String spreadsheetID = SheetDetailsValidator.spreadsheetIDGetter(url);
-            String sheetID = url.substring(url.indexOf("gid=")+4);
+            String sheetID = url.substring(url.indexOf("gid=")+4, url.indexOf("gid=")+5 );
 
 
             if(url == null || url.isEmpty()){
